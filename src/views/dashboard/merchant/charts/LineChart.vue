@@ -29,7 +29,8 @@
       },
       chartData: {
         type: Object,
-        required: true
+        required: true,
+        default: {}
       }
     },
     data() {
@@ -62,7 +63,7 @@
         this.chart = echarts.init(this.$el, 'macarons')
         this.setOptions(this.chartData)
       },
-      setOptions({ expectedData, actualData } = {}) {
+      setOptions({ commentNum, viewNum } = {}) {
         this.chart.setOption({
           xAxis: {
             data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
@@ -105,7 +106,7 @@
             },
             smooth: true,
             type: 'line',
-            data: expectedData,
+            data: commentNum,
             animationDuration: 2000,
             animationEasing: 'cubicInOut'
           },
@@ -125,7 +126,7 @@
                   }
                 }
               },
-              data: actualData,
+              data: viewNum,
               animationDuration: 2000,
               animationEasing: 'quadraticOut'
             }]

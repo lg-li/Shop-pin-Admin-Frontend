@@ -24,14 +24,11 @@
       ])
     },
     created() {
-      // try {
-      //   await store.dispatch('store/getStoreInfo')
-      // }catch {
-      //
-      // }
-      // if (!this.roles.includes('admin')) {
-      //   this.currentRole = 'merchantDashboard'
-      // }
+      if (this.roles.includes('merchant')) {
+        this.currentRole = 'merchantDashboard'
+      } else if (this.roles.includes('admin')) {
+        this.currentRole = 'adminDashboard'
+      }
     }
   }
 </script>

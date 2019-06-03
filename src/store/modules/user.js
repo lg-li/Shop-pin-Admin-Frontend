@@ -4,6 +4,7 @@ import { resetRouter } from '@/router'
 
 const state = {
   token: getToken(), // 获取Token
+  id: '',
   name: '',
   avatar: '',
   introduction: '',
@@ -13,6 +14,9 @@ const state = {
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
+  },
+  SET_ID: (state, id) => {
+    state.id = id
   },
   SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction

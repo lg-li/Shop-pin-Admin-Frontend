@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'PinCookie'
+const TokenKey = 'PinUserName'
 
 export function getToken() {
   return Cookies.get(TokenKey)
@@ -12,4 +12,16 @@ export function setToken(token) {
 
 export function removeToken() {
   return Cookies.remove(TokenKey)
+}
+
+export function getStoreToken() {
+  return Cookies.get('PinCurrentStore')
+}
+
+export function setStoreToken(token) {
+  return Cookies.set('PinCurrentStore', token)
+}
+
+export function removeStoreToken() {
+  return Cookies.remove('PinCurrentStore')
 }

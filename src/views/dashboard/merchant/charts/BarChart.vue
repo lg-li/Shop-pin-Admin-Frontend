@@ -24,11 +24,24 @@
       height: {
         type: String,
         default: '350px'
+      },
+      chartData: {
+        type: Object,
+        required: true,
+        default: {}
       }
     },
     data() {
       return {
         chart: null
+      }
+    },
+    watch: {
+      chartData: {
+        deep: true,
+        handler(val) {
+          this.setOptions(val)
+        }
       }
     },
     mounted() {
@@ -46,7 +59,9 @@
     methods: {
       initChart() {
         this.chart = echarts.init(this.$el, 'macarons')
-
+        this.setOptions(this.chartData)
+      },
+      setOptions({ orderNum } = {}) {
         this.chart.setOption({
           tooltip: {
             trigger: 'axis',
@@ -79,7 +94,7 @@
             type: 'bar',
             stack: 'vistors',
             barWidth: '50%',
-            data: [79, 52, 200, 334, 390, 330, 220],
+            data: orderNum,
             animationDuration
           }]
         })

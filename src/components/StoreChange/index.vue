@@ -18,10 +18,7 @@
   export default {
     name: 'StoreChange',
     data() {
-      return {
-        storeList: ['成都店', '重庆店', '昆明店'
-        ]
-      }
+      return {}
     },
     computed:{
       ...mapGetters([
@@ -30,17 +27,16 @@
       ])
     },
     methods:{
-      async getStoreInfo() {
+      async getStoreList() {
         try {
-          await store.dispatch('store/getStoreInfo')
+          await store.dispatch('store/getStoreList')
         }catch {
 
         }
       }
     },
     mounted() {
-      this.init()
-      this.getStoreInfo()
+      this.getStoreList()
     },
     beforeDestroy() {
       this.destroy()

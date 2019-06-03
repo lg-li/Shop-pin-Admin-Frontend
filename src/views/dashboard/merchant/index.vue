@@ -5,10 +5,10 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>当前店铺</span>
-            <el-button style="float: right; padding: 3px 0" @click="switchStore"type="text">切换店铺</el-button>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="switchDialog = true">切换店铺</el-button>
           </div>
-          <div class="store-name">{{current_store.name}}</div>
-          <div class="store-intro">{{current_store.description}}</div>
+          <div class="store-name">{{ current_store.name }}</div>
+          <div class="store-intro">{{ current_store.description }}</div>
         </el-card>
       </el-col>
     </el-row>
@@ -18,7 +18,7 @@
           <div slot="header" class="clearfix">
             <span>订单</span>
           </div>
-          <div class="number">{{readyToDeliver}}</div>
+          <div class="number">{{ storeData.readyToDeliver }}</div>
           <div class="little-text">待发货</div>
         </el-card>
       </el-col>
@@ -28,7 +28,7 @@
           <div slot="header" class="clearfix">
             <span>订单</span>
           </div>
-          <div class="number">{{salesReturn}}</div>
+          <div class="number">{{ storeData.salesReturn }}</div>
           <div class="little-text">退换货</div>
         </el-card>
       </el-col>
@@ -37,7 +37,7 @@
           <div slot="header" class="clearfix">
             <span>商品</span>
           </div>
-          <div class="number">{{inventory}}</div>
+          <div class="number">{{ storeData.inventory }}</div>
           <div class="little-text">库存预警</div>
         </el-card>
       </el-col>
@@ -46,7 +46,7 @@
           <div slot="header" class="clearfix">
             <span>评论</span>
           </div>
-          <div class="number">{{comment}}</div>
+          <div class="number">{{ storeData.comment }}</div>
           <div class="little-text">新评论</div>
         </el-card>
       </el-col>
@@ -55,17 +55,29 @@
     <el-row :gutter="20">
       <el-col :xs="24" :sm="12" :lg="12" class="card-line">
         <el-card>
-          <line-chart :chart-data="lineChartData"/>
+          <line-chart :chart-data="storeData.ChartData"/>
         </el-card>
       </el-col>
 
       <el-col :xs="24" :sm="12" :lg="12" class="card-line">
         <el-card>
-          <bar-chart/>
+          <bar-chart :chart-data="storeData.ChartData"/>
         </el-card>
       </el-col>
 
     </el-row>
+
+    <el-dialog title="切换店铺" :visible.sync="switchDialog">
+      <div>
+        <el-radio-group v-model="targetStore">
+          <el-radio-button v-for="(store,index) in store_list" :label="index">{{ store.name }}</el-radio-button>
+        </el-radio-group>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="switchDialog = false">取 消</el-button>
+        <el-button type="primary" @click="switchStore">确 定</el-button>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
@@ -75,6 +87,7 @@
   import BarChart from './charts/BarChart'
   import LineChart from './charts/LineChart'
   import store from '@/store'
+  import { getStoreInfo } from '@/api/store'
 
   export default {
     name: 'Dashboard',
@@ -84,16 +97,12 @@
     },
     data() {
       return {
-        readyToDeliver: 14, //待发货
-        salesReturn: 22, //退换货
-        inventory: 3, //库存预警
-        comment: 99, //评论
-        lineChartData: {
-          expectedData: [100, 120, 161, 134, 105, 160, 165],
-          actualData: [120, 82, 91, 154, 162, 140, 145]
-        }
-      }
+        storeData: {},
+        temp: {},
+        switchDialog: false,
+        targetStore: 0
 
+      }
     },
     computed: {
       ...mapGetters([
@@ -101,26 +110,43 @@
         'current_store'
       ])
     },
-    methods:{
-      async getStoreInfo(){
-        try {
-          await store.dispatch('store/getStoreInfo')
-        }catch {
-
-        }
-      }
+    mounted() {
+      this.getStoreData()
     },
     created() {
-     this.getStoreInfo()
-      // if (!this.roles.includes('admin')) {
-      //   this.currentRole = 'merchantDashboard'
-      // }
+      this.getStoreDatas()
+    },
+    methods: {
+      switchStore() {
+        store.dispatch('store/changeCurrentStore', this.targetStore)
+        this.switchDialog = false
+        this.getStoreNum()
+      },
+      getStoreNum() {
+        return new Promise((resolve, reject) => {
+          getStoreInfo(this.current_store.id)
+            .then(response => {
+              this.storeData = response.data.storeData
+              var what = response.data.storeData
+              this.$message.error(what === null)
+            }).catch(error => {
+            reject(error)
+          })
+        })
+      },
+
+      async getStoreData() {
+        try {
+          await store.dispatch('store/getStoreList')
+          await this.getStoreNum()
+        } catch {
+      }
+      }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-
 
   .home-container {
     background-color: #f0f2f5;
@@ -154,7 +180,6 @@
     margin-top: 8px;
   }
 
-
   @media (max-width: 1024px) {
     .chart-wrapper {
       padding: 8px;
@@ -167,6 +192,4 @@
     margin-bottom: 16px;
   }
 </style>
-
-
 

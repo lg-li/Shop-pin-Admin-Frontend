@@ -1,11 +1,12 @@
 import { getStoreList } from '@/api/store'
-// import {getToken,setToken,removeToken} from '@/utils/auth'
+import { getToken, getStoreToken, setStoreToken, removeStoreToken } from '@/utils/auth'
 
 const state = {
+  storeToken: getStoreToken(),
   id: 2,
   name: '',
   description: '',
-  currentStore: {},
+  currentStore: {}, // 获取商店Token
   logo_url: '',
   store_list: []
 }
@@ -28,25 +29,28 @@ const mutations = {
     state.logo_url = url
   },
   SET_STORE_LIST: (state, list) => {
-    state.store_list=list
+    state.store_list = list
   }
 }
 
 const actions = {
-  getStoreInfo({ commit }, userId) {
+  getStoreList({ commit }, userId) {
     return new Promise((resolve, reject) => {
-      getStoreList(state.token).then(response => {
+      getStoreList(getToken()).then(response => {
         const { data } = response
         if (!data) {
           reject('获取商店列表失败 请重新登录')
         }
         commit('SET_STORE_LIST', data.storeList)
         if (data.storeList && data.storeList.length > 0) {
-          commit('SET_CURRENTSTORE', data.storeList[0])
-          commit('SET_ID', state.currentStore.id)
-          commit('SET_STORENAME', state.currentStore.name)
-          commit('SET_LOGO_URL', state.currentStore.logo_url)
-          commit('SET_DESCRIPTION', state.currentStore.description)
+          if (state.id === 2) {
+            commit('SET_CURRENTSTORE', data.storeList[0])
+            setStoreToken(state.currentStore.id)
+            commit('SET_ID', state.currentStore.id)
+            commit('SET_STORENAME', state.currentStore.name)
+            commit('SET_LOGO_URL', state.currentStore.logo_url)
+            commit('SET_DESCRIPTION', state.currentStore.description)
+          }
           resolve(data)
         }
       }).catch(error => {
@@ -56,7 +60,8 @@ const actions = {
   },
 
   changeCurrentStore({ commit }, index) {
-    commit('SET_CURRENTSTORE', data.storeList[index])
+    commit('SET_CURRENTSTORE', state.store_list[index])
+    setStoreToken(state.currentStore.id)
     commit('SET_ID', state.currentStore.id)
     commit('SET_STORENAME', state.currentStore.name)
     commit('SET_LOGO_URL', state.currentStore.name)
