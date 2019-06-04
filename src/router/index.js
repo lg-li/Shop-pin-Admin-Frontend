@@ -55,7 +55,7 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
-  },
+  }
 ]
 
 /**
@@ -110,10 +110,15 @@ export const asyncRoutes = [
     meta: { title: '订单', icon: 'example', roles: ['merchant'] },
     children: [
       {
-        path: 'manage',
+        path: 'singleManage',
         name: 'orderManage',
         component: () => import('@/views/Orders/orderManage'),
         meta: { title: '订单管理', icon: 'table', roles: ['merchant'] }
+      }, {
+        path: 'groupManage',
+        name: 'orderManage',
+        component: () => import('@/views/Orders/groupOrderManage'),
+        meta: { title: '团单管理', icon: 'table', roles: ['merchant'] }
       }
     ]
   },

@@ -13,6 +13,7 @@
 <script>
   import tabPane from './components/TabPane'
 
+
   export default {
     name: 'Tab',
     components: { tabPane },
@@ -50,6 +51,7 @@
 
 <style scoped>
   .tab-container {
-    margin: 30px;
+    padding: 16px;
+    min-height: calc(100vh - 84px);
   }
 </style>

@@ -17,9 +17,6 @@
                 :src="current_store.logo_url"
                 style="width: 300px; height: 200px"
                 :fit="scale-down">
-                <div slot="placeholder" class="image-slot">
-                  加载中<span class="dot">...</span>
-                </div>
               </el-image>
             </div>
 
@@ -41,8 +38,8 @@
         </el-card>
       </el-col>
       <el-col :xs="24" :sm="6" :lg="6">
-        <el-card>
-          <el-button>修改店铺</el-button>
+        <el-card class="right-card">
+          <el-button>修改店铺信息</el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -86,5 +83,9 @@
 
   .store-info-item .item-data {
     font-size: 20px
+  }
+
+  .right-card {
+    align: center;
   }
 </style>

@@ -127,8 +127,6 @@
           getStoreInfo(this.current_store.id)
             .then(response => {
               this.storeData = response.data.storeData
-              var what = response.data.storeData
-              this.$message.error(what === null)
             }).catch(error => {
             reject(error)
           })
@@ -150,7 +148,7 @@
 
   .home-container {
     background-color: #f0f2f5;
-    padding: 30px;
+    padding: 16px;
     min-height: calc(100vh - 84px);
   }
 
