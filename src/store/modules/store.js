@@ -36,7 +36,7 @@ const mutations = {
 const actions = {
   getStoreList({ commit }, userId) {
     return new Promise((resolve, reject) => {
-      getStoreList(getToken()).then(response => {
+      getStoreList().then(response => {
         const { data } = response
         if (!data) {
           reject('获取商店列表失败 请重新登录')

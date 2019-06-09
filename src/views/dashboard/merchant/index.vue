@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <el-row :gutter="20">
-      <el-col :xs="12" :sm="12" :lg="12" class="card-line">
+      <el-col :xs="24" :sm="12" :lg="12" class="card-line">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>当前店铺</span>
@@ -13,7 +13,7 @@
       </el-col>
     </el-row>
     <el-row :gutter="20">
-      <el-col :xs="12" :sm="12" :lg="6" class="card-line">
+      <el-col :xs="12" :sm="6" :lg="6" class="card-line">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>订单</span>
@@ -23,7 +23,7 @@
         </el-card>
       </el-col>
 
-      <el-col :xs="12" :sm="12" :lg="6" class="card-line">
+      <el-col :xs="12" :sm="6" :lg="6" class="card-line">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>订单</span>
@@ -32,7 +32,7 @@
           <div class="little-text">退换货</div>
         </el-card>
       </el-col>
-      <el-col :xs="12" :sm="12" :lg="6" class="card-line">
+      <el-col :xs="12" :sm="6" :lg="6" class="card-line">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>商品</span>
@@ -41,7 +41,7 @@
           <div class="little-text">库存预警</div>
         </el-card>
       </el-col>
-      <el-col :xs="12" :sm="12" :lg="6" class="card-line">
+      <el-col :xs="12" :sm="6" :lg="6" class="card-line">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>评论</span>
@@ -55,13 +55,13 @@
     <el-row :gutter="20">
       <el-col :xs="24" :sm="12" :lg="12" class="card-line">
         <el-card>
-          <line-chart :chart-data="storeData.ChartData"/>
+          <line-chart :chart-data="storeData.chartData"/>
         </el-card>
       </el-col>
 
       <el-col :xs="24" :sm="12" :lg="12" class="card-line">
         <el-card>
-          <bar-chart :chart-data="storeData.ChartData"/>
+          <bar-chart :chart-data="storeData.chartData"/>
         </el-card>
       </el-col>
 
@@ -113,9 +113,7 @@
     mounted() {
       this.getStoreData()
     },
-    created() {
-      this.getStoreDatas()
-    },
+
     methods: {
       switchStore() {
         store.dispatch('store/changeCurrentStore', this.targetStore)
@@ -124,7 +122,7 @@
       },
       getStoreNum() {
         return new Promise((resolve, reject) => {
-          getStoreInfo(this.current_store.id)
+          getStoreInfo()
             .then(response => {
               this.storeData = response.data.storeData
             }).catch(error => {

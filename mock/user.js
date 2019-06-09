@@ -14,19 +14,16 @@ const tokens = {
 const users = {
   'admin-token': {
     roles: ['admin'],
-    introduction: 'I am an admin lu la lu',
     avatar: 'http://ww1.sinaimg.cn/large/9d167ea7ly1g3i0obr482j20d409in0e.jpg',
     name: 'Normal Admin'
   },
   'merchant-token': {
-    roles: ['merchant'],
-    introduction: 'I am a merchant from Japan',
+    roles: ['merchant'], // 他所拥有的权限
     avatar: 'http://ww1.sinaimg.cn/large/9d167ea7ly1g310mrnvn7j20hs0hs74y.jpg',
     name: 'Normal merchant'
   },
   'god-token': {
     roles: ['god'],
-    introduction: 'I am the world, the world is me',
     avatar: 'http://ww1.sinaimg.cn/large/9d167ea7ly1g310mrnvn7j20hs0hs74y.jpg',
     name: 'Normal merchant'
   }
@@ -51,13 +48,13 @@ export default [
       // mock error
       if (!token) {
         return {
-          code: 60204,
+          code: 401,
           message: '账户密码不正确'
         }
       }
 
       return {
-        code: 20000,
+        code: 200,
         data: token
       }
     }
@@ -68,19 +65,10 @@ export default [
     url: '/user/info\.*',
     type: 'get',
     response: config => {
-      const { token } = config.query
-      const info = users[token]
-
-      // mock error
-      if (!info) {
-        return {
-          code: 50008,
-          message: '登录失败，无法获取用户信息'
-        }
-      }
+      const info = users['merchant-token']
 
       return {
-        code: 20000,
+        code: 200,
         data: info
       }
     }
@@ -92,7 +80,7 @@ export default [
     type: 'post',
     response: _ => {
       return {
-        code: 20000,
+        code: 200,
         data: 'success'
       }
     }

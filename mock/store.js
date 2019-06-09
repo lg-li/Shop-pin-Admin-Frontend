@@ -21,7 +21,7 @@ const storeDataTemp = {
     'salesReturn|1-200': 100,
     'inventory|1-200': 100,
     'comment|1-200': 100,
-    ChartData: {
+    chartData: {
       'commentNum|7': ['@natural(1, 200)'],
       'viewNum|7': ['@natural(1, 200)'],
       'orderNum|7': ['@natural(200,400)']
@@ -36,7 +36,8 @@ export default [
     response: config => {
       const stores = data.stores
       return {
-        code: 20000,
+        code: 200,
+        message: '',
         data: {
           storeList: stores
         }
@@ -44,16 +45,15 @@ export default [
     }
   },
   {
-    url: '/store/storeInfo\.*',
+    url: '/store/storeInfo',
     type: 'get',
     response: config => {
-      const { id } = config.query
       const storeData = Mock.mock(storeDataTemp).storeData
       return {
-        code: 20000,
+        code: 200,
+        message: '',
         data: {
           storeData: storeData,
-          id: id
         }
       }
     }

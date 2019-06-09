@@ -1,21 +1,28 @@
 import request from '@/utils/request'
 
-export function getGoodsList(storeId, queryType) {
+export function getGoodsList(queryType, queryList) {
   return request({
     url: '/goods/goodsList',
     method: 'get',
     params: {
-      storeId: storeId,
-      queryType: queryType
+      queryType: queryType,
+      queryList: queryList
     }
   })
 }
 
-export function getGoodsCategory(storeId) {
+export function getGoodsCategory(queryType, queryList) {
   return request({
     url: '/goods/goodsCategory',
     method: 'get',
-    params: { storeId }
+    params: { queryType, queryList }
+  })
+}
+
+export function getCategoryList() {
+  return request({
+    url: '/goods/categoryList',
+    method: 'get'
   })
 }
 

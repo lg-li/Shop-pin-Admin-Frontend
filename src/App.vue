@@ -9,3 +9,9 @@ export default {
   name: 'App'
 }
 </script>
+
+<style>
+  .el-scrollbar__wrap {
+    overflow-x: hidden;
+  }
+</style>

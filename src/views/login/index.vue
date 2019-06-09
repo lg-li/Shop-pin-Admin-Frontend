@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">登录 PIN后台</h3>
+        <h3 class="title">登录 PIN 后台</h3>
       </div>
 
       <el-form-item prop="username">
@@ -41,8 +41,12 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;"
-                 @click.native.prevent="handleLogin">登录
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width:100%;margin-bottom:30px;"
+        @click.native.prevent="handleLogin"
+      >登录
       </el-button>
 
       <div class="tips">
@@ -75,8 +79,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: 'Moon Blade',
+        password: '20191108'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -117,8 +121,8 @@ export default {
               this.loading = false
             })
             .catch(() => {
-            this.loading = false
-          })
+              this.loading = false
+            })
         } else {
           console.log('请检查输入后重试登录')
           return false

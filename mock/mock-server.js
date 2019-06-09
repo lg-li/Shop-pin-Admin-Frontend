@@ -59,7 +59,7 @@ module.exports = app => {
         mockRoutesLength = mockRoutes.mockRoutesLength
         mockStartIndex = mockRoutes.mockStartIndex
 
-        console.log(chalk.magentaBright(`\n > Mock Server hot reload success! changed  ${path}`))
+        console.log(chalk.magentaBright(`\n > 辉夜姬Mock 热更新成功。为您加载changed  ${path}`))
       } catch (error) {
         console.log(chalk.redBright(error))
       }

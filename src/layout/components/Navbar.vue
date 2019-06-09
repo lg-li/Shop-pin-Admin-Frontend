@@ -25,7 +25,7 @@
           </router-link>
 
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">登出</span>
+            <span style="display:block;" @click="logout">安全退出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
