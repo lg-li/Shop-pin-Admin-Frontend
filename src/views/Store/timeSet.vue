@@ -73,6 +73,7 @@
 
     mounted() {
       this.getList()
+      this.newTime = new Date()
     },
     methods: {
       async getList() {
@@ -92,6 +93,7 @@
       },
       handleAdd() {
         const number = this.timePointList.length + 1
+        this.$message.error(typeof this.newTime)
         this.timePointList.push({
           number: number,
           time: this.newTime

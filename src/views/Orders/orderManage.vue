@@ -113,15 +113,16 @@
 
         <el-table-column width="100px" align="center" label="支付时间">
           <template slot-scope="scope">
-            <span>{{ scope.row.payTime }}</span>
+            <span v-if="scope.row.payTime">{{ scope.row.payTime| parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+            <span v-else>无</span>
           </template>
         </el-table-column>
 
         <el-table-column width="100px" align="center" label="支付状态">
           <template slot-scope="scope">
             <el-tag :type="scope.row.paid | payStatusFilter">
-              <span v-if="scope.row.paid===0">未支付</span>
-              <span v-else>{{ scope.row.payType }}</span>
+              <span v-if="scope.row.paid===false">未支付</span>
+              <span v-else>{{ scope.row.payType | payTypeFilter }}</span>
             </el-tag>
           </template>
         </el-table-column>
@@ -147,7 +148,7 @@
         <el-table-column min-width="100px" align="center" label="操作" close-on-click-modal="false">
           <template slot-scope="scope">
             <el-button
-              v-if="scope.row.paid===1&&scope.row.status===0"
+              v-if="scope.row.paid===true&&scope.row.status===0"
               style="margin-bottom: 4px"
               type="primary"
               plain
@@ -161,7 +162,7 @@
                 操作<i class="el-icon-arrow-down el-icon--right"/>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-if="scope.row.paid===0" @click.native="handleChangeOrder(scope.row)">修改订单
+                <el-dropdown-item v-if="scope.row.paid===false" @click.native="handleChangeOrder(scope.row)">修改订单
                 </el-dropdown-item>
                 <el-dropdown-item @click.native="handleRemarkOrder(scope.row)">订单备注</el-dropdown-item>
                 <el-dropdown-item v-if="scope.row.refundStatus===1" @click.native="handleRefundOrder(scope.row)">处理退款
@@ -232,9 +233,9 @@
           >
             <el-option
               v-for="item in deliverNameList"
-              :key="item"
-              :label="item"
-              :value="item"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
             />
           </el-select>
         </el-form-item>
@@ -324,6 +325,7 @@
 
   import { getSingleOrderList, getDeliverNameList } from '@/api/order'
   import { mapGetters } from 'vuex'
+  import { parseTime } from '@/utils/index'
   import orderDetailWindow from './orderDetailWindow'
   import Pagination from '@/components/Pagination'
 
@@ -339,6 +341,14 @@
       Pagination
     },
     filters: {
+      parseTime,
+      payTypeFilter(type) {
+        const map = {
+          'BALANCE': '余额支付',
+          'WECHAT': '微信支付'
+        }
+        return map[type]
+      },
       orderStatusFilter(status) {
         const statusMap = {
           0: 'danger',
@@ -358,14 +368,14 @@
           2: '待评价',
           3: '已评价',
           4: '已退款',
-          5: '退款拒绝'
+          5: '已拒绝'
         }
         return statusMap[word]
       },
       payStatusFilter(status) {
         const statusMap = {
-          0: 'danger',
-          1: 'success'
+          false: 'danger',
+          true: 'success'
         }
         return statusMap[status]
       }
@@ -394,13 +404,15 @@
     },
     mounted() {
       this.getList()
+    },
+    created() {
       this.getCompressList()
     },
     methods: {
       async getCompressList() {
         await new Promise((resolve, reject) => {
           getDeliverNameList().then(response => {
-            this.deliverNameList = response.data.deliverNameList
+            this.deliverNameList = response.data.list
           }).catch(error => {
             reject(error)
           })
@@ -459,6 +471,19 @@
       },
       searchOrder() {
         this.getList()
+      },
+      millisecondsToTimeString(milliseconds) {
+        milliseconds += 8 * 3600000 // 增加 timestamp offset
+        const seconds = Math.floor(milliseconds / 1000)
+        let hours = String(Math.floor(seconds / 3600) - 14)
+        let minutes = String(Math.floor((seconds % 3600) / 60))
+        if (hours.length < 2) {
+          hours = '0' + hours
+        }
+        if (minutes.length < 2) {
+          minutes = '0' + minutes
+        }
+        return String(hours + ':' + minutes)
       }
     }
   }

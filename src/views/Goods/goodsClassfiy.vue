@@ -59,7 +59,7 @@
               <el-option
                 v-for="item in categoryData"
                 :key="item.parent.id"
-                :label="item.parent.text"
+                :label="item.parent.category_name"
                 :value="item.parent.id"
               />
             </el-select>
@@ -79,7 +79,7 @@
               <el-option
                 v-for="child in childData"
                 :key="child.id"
-                :label="child.text"
+                :label="child.category_name"
                 :value="child.id"
                 @change="setChild($event,scope.row)"
               />
@@ -195,14 +195,14 @@
         for (const val of this.categoryData) {
           if (val.parent.id === parentId) {
             this.childData = val.child
-            row.tempParentCategory = val.parent.text
+            row.tempParentCategory = val.parent.category_name
           }
         }
       },
       setChild(childId, row) {
         for (const val of this.childData) {
           if (val.id === childId) {
-            row.tempChildCategory = val.text
+            row.tempChildCategory = val.category_name
           }
       }
       },
@@ -215,9 +215,9 @@
           return
         }
         row.edit = false
-        row.parentCategory = row.tempParentCategory
+        row.parentCategoryName = row.tempParentCategory
         row.parentCategoryId = row.tempParentCategoryId
-        row.childCategory = row.tempChildCategory
+        row.childCategoryName = row.tempChildCategory
         row.childCategoryId = row.tempChildCategoryId
         this.$message({
           message: `商品 ${row.name} 的分类修改成功`,
@@ -225,9 +225,9 @@
         })
       },
       cancelEdit(row) {
-        row.tempParentCategory = row.parentCategory
+        row.tempParentCategory = row.parentCategoryName
         row.tempParentCategoryId = row.parentCategoryId
-        row.tempChildCategory = row.childCategory
+        row.tempChildCategory = row.childCategoryName
         row.tempChildCategoryId = row.childCategoryId
         row.edit = false
         this.$message({

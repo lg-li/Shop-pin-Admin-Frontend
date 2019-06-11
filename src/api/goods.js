@@ -13,7 +13,7 @@ export function getGoodsList(queryType, queryList) {
 
 export function getGoodsWithComment(queryList) {
   return request({
-    url: '/goods/goodsWithComment',
+    url: '/goods/goods-with-comment',
     methods: 'get',
     params: {
       queryList: queryList
@@ -31,7 +31,7 @@ export function getGoodsCategory(queryType, queryList) {
 
 export function getCategoryList() { // 获取所有的分类列表
   return request({
-    url: '/goods/categoryList',
+    url: '/goods/category-list',
     method: 'get'
   })
 }

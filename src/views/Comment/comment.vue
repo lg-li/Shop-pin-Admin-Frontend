@@ -41,7 +41,7 @@
                 <span class="good-text-info">{{ good.name }}</span>
               </div>
               <div style="margin-bottom: 20px"><span
-                style="font-size: 30px;font-weight: 500">{{ good.commentNum }}</span>
+                style="font-size: 30px;font-weight: 500">{{ good.nums }}</span>
                 <span>条评论</span>
               </div>
             </el-col>
@@ -215,7 +215,7 @@
         await new Promise((resolve, reject) => {
           getGoodsWithComment(this.listQuery)
             .then(response => {
-              this.goodsData = response.data.goodsList
+              this.goodsData = response.data.list
               this.goodsListLoading = false
             }).catch(error => {
             reject(error)

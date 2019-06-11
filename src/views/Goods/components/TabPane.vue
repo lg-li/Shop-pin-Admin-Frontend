@@ -33,6 +33,53 @@
         </template>
       </el-table-column>
 
+      <el-table-column label="商品种类" width="100px" type="expand">
+        <template slot-scope="scope">
+          <el-table
+            :data="scope.row.skuList"
+            border
+            fit
+            highlight-current-row
+            style="width: 100%">
+            <el-table-column align="center" label="ID" width="65" fixed="left">
+              <template slot-scope="item">
+                <span>{{ item.row.id }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="180px" align="center" label="图片">
+              <template slot-scope="item">
+                <el-image
+                  style="width: 100px; height: 100px"
+                  :src="item.row.imageUrl"
+                  :fit="contain"
+                  lazy
+                />
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="SKU" width="65" fixed="left">
+              <template slot-scope="item">
+                <span>{{ item.row.sku }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="库存" width="65" fixed="left">
+              <template slot-scope="item">
+                <span>{{ item.row.stock }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="价格" width="65" fixed="left">
+              <template slot-scope="item">
+                <span>{{ item.row.price }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="成本价" width="65" fixed="left">
+              <template slot-scope="item">
+                <span>{{ item.row.cost }}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </template>
+      </el-table-column>
+
       <el-table-column width="120px" align="center" fixed="left" label="商品名称">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>

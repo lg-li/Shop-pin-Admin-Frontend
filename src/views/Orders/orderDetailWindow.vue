@@ -30,20 +30,20 @@
     <h2>商品</h2>
     <div style="height: 30vh;">
       <el-scrollbar style="height: 100%">
-        <div v-for="(good,index) in order.goodsList">
+        <div v-for="(good,index) in order.orderItems">
           <el-col :span="24" style="margin-bottom: 4px">
             <el-card class="good-card">
               <el-col :span="5">
-                <el-image :src="good.imageUrls" :fit="contain" lazy>
+                <el-image :src="good.product.imageUrls" :fit="contain" lazy>
                   <div slot="placeholder" class="image-slot">
                     加载中<span class="dot">...</span>
                   </div>
                 </el-image>
               </el-col>
               <el-col :span="16">
-                <div style="margin-bottom: 8px"><span class="good-text">商品名称</span> <span class="good-text-info">{{ good.name }}</span>
+                <div style="margin-bottom: 8px"><span class="good-text">商品名称</span> <span class="good-text-info">{{ good.product.name }}</span>
                 </div>
-                <div style="margin-bottom: 8px"><span class="good-text">商品价格</span> <span class="good-text-info">{{ good.price }}</span>
+                <div style="margin-bottom: 8px"><span class="good-text">商品价格</span> <span class="good-text-info">{{ good.product.price }}</span>
                 </div>
                 <div style="margin-bottom: 8px"><span class="good-text">商品数量</span> <span class="good-text-info">{{ good.amount }}</span>
                 </div>
