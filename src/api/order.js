@@ -17,8 +17,8 @@ export function getDeliverNameList(queryType) { // 获取物流公司的列表
 
 export function getGroupOrderList(queryType) {
   return request({
-    url: '/order/groupOrderList',
-    method: 'get',
-    data: { queryType: queryType }
+    url: '/admin/order/get-group-order-list',
+    method: 'post',
+    data: queryType
   })
 }
