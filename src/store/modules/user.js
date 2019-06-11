@@ -33,16 +33,17 @@ const actions = {
   // user login
   // ES2015参数解构 不管传参是什么，直接获取参数.commit对象
   login({ commit }, userInfo) { // 由this.$store.dispatch('url/login')调用
-    const { username, password } = userInfo // 参数解构 直接获取username和password
+    const { user, password } = userInfo // 参数解构 直接获取username和password
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ user: user.trim(), password: password }).then(response => {
         // 这里的login是request api库里的写好的
         // 用api/user/login发送request请求
         const { data } = response
+        const token = 'Bearer ' + data
         // data = response.data
-        commit('SET_TOKEN', data.token)
+        commit('SET_TOKEN', token)
         // 本地Store里储存Token
-        setToken(data.token)
+        setToken(token)
         // Cookies里储存Token
         resolve()
       }).catch(error => {
@@ -61,7 +62,7 @@ const actions = {
           reject('获取用户信息失败 请重新登录')
         }
 
-        const { roles, name, avatar } = data
+        const { roles, nickname, avatarUrl } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
@@ -69,8 +70,8 @@ const actions = {
         }
 
         commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
+        commit('SET_NAME', nickname)
+        commit('SET_AVATAR', avatarUrl)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -81,15 +82,11 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
-        removeToken() // 从Cookies中移除Token
-        resetRouter()
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      commit('SET_TOKEN', '')
+      commit('SET_ROLES', [])
+      removeToken() // 从Cookies中移除Token
+      resetRouter()
+      resolve()
     })
   },
 

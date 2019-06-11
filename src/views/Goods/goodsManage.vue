@@ -12,7 +12,6 @@
 <script>
   import tabPane from './components/TabPane'
 
-
   export default {
     name: 'Tab',
     components: { tabPane },
@@ -39,7 +38,7 @@
       if (tab) {
         this.activeName = tab
       }
-    },
+    }
   }
 </script>
 

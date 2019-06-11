@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+    <el-form ref="loginForm" :model="loginForm" class="login-form" auto-complete="off" label-position="left">
 
       <div class="title-container">
         <h3 class="title">登录 PIN 后台</h3>
@@ -12,9 +12,9 @@
         </span>
         <el-input
           ref="username"
-          v-model="loginForm.username"
-          placeholder="用户名"
-          name="username"
+          v-model="loginForm.user"
+          placeholder="手机号或邮箱"
+          name="user"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -72,18 +72,19 @@ export default {
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('密码长度不能少于6位'))
+        // callback(new Error('密码长度不能少于6位'))
+        callback()
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        username: 'Moon Blade',
-        password: '20191108'
+        user: '13312425345',
+        password: 'woxihuanhaohao'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        user: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,
@@ -111,8 +112,8 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
+      // this.$refs.loginForm.validate(valid => {
+      //   if (valid) {
           this.loading = true
           // 在这里处理登录的账号密码验证等逻辑
           this.$store.dispatch('user/login', this.loginForm)
@@ -123,11 +124,11 @@ export default {
             .catch(() => {
               this.loading = false
             })
-        } else {
-          console.log('请检查输入后重试登录')
-          return false
-        }
-      })
+      //   } else {
+      //     console.log('请检查输入后重试登录')
+      //     return false
+      //   }
+      // })
     }
   }
 }

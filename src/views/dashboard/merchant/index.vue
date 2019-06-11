@@ -18,7 +18,7 @@
           <div slot="header" class="clearfix">
             <span>订单</span>
           </div>
-          <div class="number">{{ storeData.readyToDeliver }}</div>
+          <div class="number">{{ storeData.readyToDelivery }}</div>
           <div class="little-text">待发货</div>
         </el-card>
       </el-col>
@@ -124,7 +124,7 @@
         return new Promise((resolve, reject) => {
           getStoreInfo()
             .then(response => {
-              this.storeData = response.data.storeData
+              this.storeData = response.data
             }).catch(error => {
             reject(error)
           })
@@ -145,7 +145,6 @@
 <style lang="scss" scoped>
 
   .home-container {
-    background-color: #f0f2f5;
     padding: 16px;
     min-height: calc(100vh - 84px);
   }

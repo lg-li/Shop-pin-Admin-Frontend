@@ -146,8 +146,14 @@
 
         <el-table-column min-width="100px" align="center" label="操作" close-on-click-modal="false">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.paid===1&&scope.row.status===0" style="margin-bottom: 4px" type="primary" plain
-                       size="mini" @click="handleDeliverOrder(scope.row)">
+            <el-button
+              v-if="scope.row.paid===1&&scope.row.status===0"
+              style="margin-bottom: 4px"
+              type="primary"
+              plain
+              size="mini"
+              @click="handleDeliverOrder(scope.row)"
+            >
               发货<i class="el-icon-truck el-icon--right"/>
             </el-button>
             <el-dropdown trigger="click">
@@ -218,8 +224,12 @@
         </el-form-item>
 
         <el-form-item label="物流公司" prop="delivery_name">
-          <el-select v-model="orderTemp.deliveryName" :disabled="orderTemp.deliveryType!=='1'" filterable
-                     placeholder="可输入公司名称搜索">
+          <el-select
+            v-model="orderTemp.deliveryName"
+            :disabled="orderTemp.deliveryType!=='1'"
+            filterable
+            placeholder="可输入公司名称搜索"
+          >
             <el-option
               v-for="item in deliverNameList"
               :key="item"
@@ -283,8 +293,13 @@
         </el-form-item>
         <el-form-item v-if="refundAgree!==0" :label="refundAgree===1?'退款金额':'拒绝理由'">
           <el-input v-if="refundAgree===1" v-model="orderTemp.refundPrice" placeholder="退款金额"/>
-          <el-input v-if="refundAgree===2" v-model="orderTemp.refundRefuseReason" :rows="3" type="textarea"
-                    placeholder="拒绝理由"/>
+          <el-input
+            v-if="refundAgree===2"
+            v-model="orderTemp.refundRefuseReason"
+            :rows="3"
+            type="textarea"
+            placeholder="拒绝理由"
+          />
         </el-form-item>
 
       </el-form>
@@ -300,8 +315,7 @@
     </el-dialog>
 
     <el-dialog top="2vh" title="订单详情" :visible.sync="orderDetailDialog">
-      <order-detail-window :order="orderTemp">
-      </order-detail-window>
+      <order-detail-window :order="orderTemp"/>
     </el-dialog>
   </div>
 </template>

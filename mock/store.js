@@ -53,7 +53,26 @@ export default [
         code: 200,
         message: '',
         data: {
-          storeData: storeData,
+          storeData: storeData
+        }
+      }
+    }
+  },
+  {
+    url: '/store/close-batch',
+    type: 'get',
+    response: config => {
+      const batchList = Mock.mock({
+        'batchList|1-10': [{
+          id: '@id',
+          time: '@time(HH:mm)'
+        }]
+      })
+      return {
+        code: 200,
+        message: '',
+        data: {
+          batchList: batchList.batchList
         }
       }
     }

@@ -70,13 +70,13 @@ export const asyncRoutes = [
     redirect: '/example/table',
     name: 'Store',
     alwaysShow: true,
-    meta: { title: '店铺', icon: 'example', roles: ['merchant'] },
+    meta: { title: '店铺', icon: 'example', roles: ['ROLE_MERCHANT'] },
     children: [
       {
         path: 'manage',
         name: 'storeManage',
         component: () => import('@/views/Store/storeManage'),
-        meta: { title: '店铺管理', icon: 'table', roles: ['merchant'] }
+        meta: { title: '店铺管理', icon: 'table', roles: ['ROLE_MERCHANT'] }
       }
     ]
   },
@@ -85,19 +85,19 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/goods/manage',
     name: 'Goods',
-    meta: { title: '商品', icon: 'example', roles: ['merchant'] },
+    meta: { title: '商品', icon: 'example', roles: ['ROLE_MERCHANT'] },
     children: [
       {
         path: 'manage',
         name: 'goodsManage',
         component: () => import('@/views/Goods/goodsManage'),
-        meta: { title: '商品管理', icon: 'nested', roles: ['merchant'] }
+        meta: { title: '商品管理', icon: 'nested', roles: ['ROLE_MERCHANT'] }
       },
       {
         path: 'classfiy',
         name: 'goodsClassfiy',
         component: () => import('@/views/Goods/goodsClassfiy'),
-        meta: { title: '商品分类', icon: 'tree-table', roles: ['merchant'] }
+        meta: { title: '商品分类', icon: 'tree-table', roles: ['ROLE_MERCHANT'] }
       }
     ]
   },
@@ -107,18 +107,18 @@ export const asyncRoutes = [
     redirect: '/orders/manage',
     name: 'Orders',
     alwaysShow: true,
-    meta: { title: '订单', icon: 'example', roles: ['merchant'] },
+    meta: { title: '订单', icon: 'example', roles: ['ROLE_MERCHANT'] },
     children: [
       {
         path: 'singleManage',
         name: 'orderManage',
         component: () => import('@/views/Orders/orderManage'),
-        meta: { title: '订单管理', icon: 'table', roles: ['merchant'] }
+        meta: { title: '订单管理', icon: 'table', roles: ['ROLE_MERCHANT'] }
       }, {
         path: 'groupManage',
         name: 'orderManage',
         component: () => import('@/views/Orders/groupOrderManage'),
-        meta: { title: '团单管理', icon: 'table', roles: ['merchant'] }
+        meta: { title: '团单管理', icon: 'table', roles: ['ROLE_MERCHANT'] }
       }
     ]
   },
@@ -127,13 +127,13 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/comments/comment',
     name: 'Comments',
-    meta: { title: '评论', icon: 'example', roles: ['merchant'] },
+    meta: { title: '评论', icon: 'example', roles: ['ROLE_MERCHANT'] },
     children: [
       {
         path: 'comment',
         name: 'comment',
         component: () => import('@/views/Comment/comment'),
-        meta: { title: '评论管理', icon: 'message', roles: ['merchant'] }
+        meta: { title: '评论管理', icon: 'message', roles: ['ROLE_MERCHANT'] }
       }
     ]
   },
@@ -142,13 +142,13 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/finance/finance',
     name: 'Finance',
-    meta: { title: '财务', icon: 'example', roles: ['merchant'] },
+    meta: { title: '财务', icon: 'example', roles: ['ROLE_MERCHANT'] },
     children: [
       {
         path: 'finance',
         name: 'finance',
         component: () => import('@/views/Finance/finance'),
-        meta: { title: '财务管理', icon: 'money', roles: ['merchant'] }
+        meta: { title: '财务管理', icon: 'money', roles: ['ROLE_MERCHANT'] }
       }
     ]
   },

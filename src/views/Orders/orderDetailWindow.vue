@@ -121,7 +121,7 @@
   .demo-table-expand .el-form-item {
     margin-right: 16px;
     margin-bottom: 0;
-    width: 45%;
+    width: 40%;
   }
 
   .good-img {
@@ -154,6 +154,11 @@
     color: #606266;
     font-size: 14px;
     word-break: break-all;
+  }
+
+  .el-form--inline .el-form-item__label {
+    float: none;
+    display: inline;
   }
 
 </style>

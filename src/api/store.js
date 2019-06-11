@@ -2,29 +2,36 @@ import request from '@/utils/request'
 
 export function getStoreList() {
   return request({
-    url: '/store/storeList',
+    url: '/manager/store/storeList',
     method: 'get'
   })
 }
 
 export function getStoreInfo() {
   return request({
-    url: '/store/storeInfo',
+    url: '/manager/store/store-info',
     method: 'get'
   })
 }
 
 export function changeStoreInfo() {
   return request({
-    url: '/store/storeInfo',
+    url: '/manager/store/storeInfo',
     method: 'put'
   })
 }
 
 export function addStoreInfo() {
   return request({
-    url: '/store/storeInfo',
+    url: '/manager/store/storeInfo',
     method: 'post'
+  })
+}
+
+export function getTimePoint() {
+  return request({
+    url: '/manager/store/close-batch',
+    method: 'get'
   })
 }
 

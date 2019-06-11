@@ -21,6 +21,22 @@ const goodsCategoryTemplate = [{
 }
 ]
 
+const goodsCommentTemplate = [{
+  id: 2,
+  imageUrls: 'http://ww1.sinaimg.cn/large/9d167ea7ly1g3hyzea2xdj20a00a0q33.jpg',
+  name: '卫龙小面筋',
+  info: '小面筋辣条32g*5包香辣小吃经典怀旧素肉零食',
+  'commentNum|1-10': 2
+},
+  {
+    id: 1,
+    imageUrls: 'http://ww1.sinaimg.cn/large/9d167ea7ly1g3i0obr482j20d409in0e.jpg',
+    name: '大号无盖垃圾桶',
+    info: '塑料北欧家用大号无盖垃圾桶 创意简约箱欧式学生宿舍客厅厨房白',
+    'commentNum|1-10': 1
+  }
+]
+
 const goodsTemplate = [{
   id: 2,
   imageUrls: 'http://ww1.sinaimg.cn/large/9d167ea7ly1g3hyzea2xdj20a00a0q33.jpg',
@@ -84,6 +100,19 @@ export default [
       const data = Mock.mock({
         'goodsList|1-10': goodsCategoryTemplate,
         'total|1-100': 1
+      })
+      return {
+        code: 200,
+        data: data
+      }
+    }
+  },
+  {
+    url: '/goods/goodsWithComment',
+    type: 'get',
+    response: config => {
+      const data = Mock.mock({
+        'goodsList|1-10': goodsCommentTemplate
       })
       return {
         code: 200,

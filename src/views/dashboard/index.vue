@@ -20,7 +20,7 @@
     },
     computed: {
       ...mapGetters([
-        'roles',
+        'roles'
       ])
     },
     created() {

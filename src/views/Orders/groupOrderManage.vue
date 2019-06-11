@@ -133,8 +133,13 @@
 
         <el-table-column min-width="110px" align="center" label="操作">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.status===0" type="primary" plain size="mini"
-                       @click="handleChangeFinishTime(scope.row)">
+            <el-button
+              v-if="scope.row.status===0"
+              type="primary"
+              plain
+              size="mini"
+              @click="handleChangeFinishTime(scope.row)"
+            >
               修改截止时间
             </el-button>
           </template>
@@ -151,8 +156,7 @@
     </el-card>
 
     <el-dialog top="2vh" title="订单详情" :visible.sync="orderDetailDialog">
-      <order-detail-window :order="orderTemp">
-      </order-detail-window>
+      <order-detail-window :order="orderTemp"/>
     </el-dialog>
 
   </div>
@@ -207,6 +211,7 @@
         orderData: [],
         listQuery: {
           groupStatus: 0,
+          createTime: 0,
           pageNumber: 1,
           pageSize: 10,
           sort: '+id'

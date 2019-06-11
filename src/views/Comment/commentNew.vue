@@ -19,7 +19,6 @@
         >
           <el-card
             v-for="(good,index) in goodsData"
-            :key="'good'+index"
             class="good-card"
             style="width: 25vw;
             height: 100%;
@@ -55,115 +54,28 @@
         <span>评论列表</span>
       </div>
       <div v-if="commentData.length===0">选择商品以查看评论</div>
-      <div style="position: relative; display:inline-block; width: 100%">
-        <div v-for="(comment,index) in commentData" :key="'comment'+index" style="display:inline-block">
+      <div style="display:inline">
+        <div v-for="(comment,index) in commentData" style="display: inline">
           <el-card class="good-card">
-            <div slot="header" class="clearfix" style="vertical-align:middle">
-              <el-image
-                class="user-icon"
-                :src="comment.user.avatalUrl"
-                :fit="contain"
-                lazy
-              />
-              <el-col :span="16"/>
-              <span>{{ comment.user.nickname }}</span>
-              <el-tag style="float: right;" :type="comment.grade===0?'success':comment.grade===1?'warning':'danger'">
+            <div slot="header" class="clearfix">
+              <span>{{ comment.createTime }}</span>
+              <el-tag style="float: right; padding: 0 3px"
+                      :type="comment.grade===0?'success':comment.grade===1?'warning':'danger'">
                 <span>{{ comment.grade===0?'好评':comment.grade===1?'中评':'差评' }}</span>
               </el-tag>
             </div>
-            <el-row>
-              <span>{{ comment.content }}</span>
-            </el-row>
-            <el-divider/>
-            <el-row>
-              <span style="font-weight: 500;font-size: 14px">产品评分</span>
-              <el-rate v-model="comment.productScore" disabled :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="5"/>
-            </el-row>
-            <el-row>
-              <span style="font-weight: 500;font-size: 14px">服务评分</span>
-              <el-rate v-model=" comment.serviceScore" disabled :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="5"/>
-              <span style="float:right">
-                <el-button v-if="comment.merchantCommentContent===''" type="text" style="margin-right: 4px"
-                           @click.native="replyComment(comment)">回复</el-button>
-                <el-button type="text" @click.native="seeCommentDetail(comment)">详情</el-button>
-              </span>
-            </el-row>
+            <el-col :span="5">
+              <el-image class="commentImg" :src="comment.imagesUrls" :fit="contain" lazy>
+                <div slot="placeholder" class="image-slot">
+                  加载中<span class="dot">...</span>
+                </div>
+              </el-image>
+            </el-col>
+            <el-col :span="16"/>
           </el-card>
         </div>
       </div>
     </el-card>
-
-    <el-dialog top="4vh" title="评论详情" :visible.sync="detailDialog">
-      <el-form ref="dataForm" :model="commentTemp" label-position="left" label-width="100px" style="margin:16px">
-        <el-form-item label="用户">
-          <el-image
-            v-if="commentTemp.user.avatalUrl"
-            class="user-icon-detail"
-            :src="commentTemp.user.avatalUrl"
-            :fit="contain"
-            lazy
-          />
-          <span>{{ commentTemp.user.nickname }}</span>
-        </el-form-item>
-        <el-form-item label="购买商品">
-          <span>美丽旗舰店的花蝴蝶</span>
-        </el-form-item>
-        <el-form-item label="评论">
-          <span>{{ commentTemp.content }}</span>
-          <el-tag style="float: right;"
-                  :type="commentTemp.grade===0?'success':commentTemp.grade===1?'warning':'danger'">
-            <span>{{ commentTemp.grade===0?'好评':commentTemp.grade===1?'中评':'差评' }}</span>
-          </el-tag>
-        </el-form-item>
-        <el-form-item label="评论图片">
-          <el-image
-            class="commentImg"
-            :src="commentTemp.imagesUrls"
-            :fit="contain"
-            lazy
-          />
-        </el-form-item>
-        <el-form-item label="评论时间">
-          <span>{{ commentTemp.createTime }}</span>
-        </el-form-item>
-        <div v-if="commentTemp.merchantCommentContent!==''">
-          <el-form-item label="商家回复" prop="merchantCommentContent">
-            <span> {{ commentTemp.merchantCommentContent }}</span>
-          </el-form-item>
-          <el-form-item label="商家回复时间" prop="merchantCommentTime">
-            <span> {{ commentTemp.merchantCommentTime }}</span>
-          </el-form-item>
-        </div>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="detailDialog=false">
-          好
-        </el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog top="4vh" title="回复评论" :visible.sync="commentDialog">
-      <el-form ref="dataForm" :model="commentTemp" label-position="left" label-width="70px" style="margin:16px">
-        <el-form-item label="评论">
-          <span>{{ commentTemp.content }}</span>
-          <el-tag style="float: right;"
-                  :type="commentTemp.grade===0?'success':commentTemp.grade===1?'warning':'danger'">
-            <span>{{ commentTemp.grade===0?'好评':commentTemp.grade===1?'中评':'差评' }}</span>
-          </el-tag>
-        </el-form-item>
-        <el-form-item label="回复" prop="merchantCommentContent">
-          <el-input v-model="commentTemp.merchantCommentContent" :rows="8" type="textarea"/>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="commentDialog = false">
-          取消
-        </el-button>
-        <el-button type="primary" @click="updateComment()">
-          确认
-        </el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -189,19 +101,12 @@
         total: 0,
         goodsData: [],
         commentData: [],
-        commentTemp: {
-          user: {
-            avatarUrl: ''
-          }
-        },
         listQuery: {
           pageNumber: 1,
           pageSize: 10,
           sort: '+id',
           Key: ''
         },
-        detailDialog: false,
-        commentDialog: false,
         goodsListLoading: false,
         commentListLoading: false
       }
@@ -258,6 +163,17 @@
           type: 'success'
         })
       },
+      cancelEdit(row) {
+        row.tempParentCategory = row.parentCategory
+        row.tempParentCategoryId = row.parentCategoryId
+        row.tempChildCategory = row.childCategory
+        row.tempChildCategoryId = row.childCategoryId
+        row.edit = false
+        this.$message({
+          message: `商品 ${row.name} 的分类修改已撤回`,
+          type: 'warning'
+        })
+      },
       handleEdit(row) {
         row.edit = !row.edit
         for (const val of this.categoryData) {
@@ -271,17 +187,6 @@
       },
       refreshGoods() {
         this.getList()
-      },
-      seeCommentDetail(comment) {
-        this.commentTemp = Object.assign({}, comment)
-        this.detailDialog = true
-      },
-      replyComment(comment) {
-        this.commentTemp = Object.assign({}, comment)
-        this.commentDialog = true
-      },
-      updateComment() {
-        this.commentDialog = false
       },
       async getCommentByGoods(goods) {
         this.commentListLoading = true
@@ -319,16 +224,6 @@
     display: inline
   }
 
-  .user-icon {
-    width: 2vw;
-    height: 2vw
-  }
-
-  .user-icon-detail {
-    width: 5vw;
-    height: 5vw;
-  }
-
   .filter-choice-button {
     margin: 0 2px 4px 0;
   }
@@ -360,8 +255,7 @@
 
   .good-card {
     margin: 0 8px 8px 0;
-    width: 24vw;
-    display: inline-block;
+    width: 20vw;
   }
 
   .good-card .good-text {
@@ -373,13 +267,6 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
-  }
-
-  .good-card .el-divider--horizontal {
-    display: block;
-    height: 1px;
-    width: 100%;
-    margin: 12px 0;
   }
 
   .good-card .good-text-info {
@@ -399,16 +286,6 @@
     border-bottom: 1px solid #EBEEF5;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-  }
-
-  .el-dropdown-link {
-    cursor: pointer;
-    color: #409EFF;
-
-  }
-
-  .el-icon-arrow-down {
-    font-size: 12px;
   }
 </style>
 

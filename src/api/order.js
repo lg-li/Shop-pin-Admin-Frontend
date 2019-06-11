@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getSingleOrderList(queryType) {
   return request({
-    url: '/order/singleOrderList',
+    url: '/admin/order/query',
     method: 'get',
     params: { queryType: queryType }
   })
