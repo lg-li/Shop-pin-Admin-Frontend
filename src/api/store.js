@@ -9,7 +9,7 @@ export function getStoreList() {
 
 export function getStoreInfo() {
   return request({
-    url: '/manager/store/store-info',
+    url: '/home',
     method: 'get'
   })
 }

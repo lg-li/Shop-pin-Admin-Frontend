@@ -63,7 +63,7 @@
                 :value="item.parent.id"
               />
             </el-select>
-            <span v-else>{{ scope.row.parentCategory }}</span>
+            <span v-else>{{ scope.row.parentCategoryName }}</span>
 
           </template>
         </el-table-column>
@@ -84,7 +84,7 @@
                 @change="setChild($event,scope.row)"
               />
             </el-select>
-            <span v-else>{{ scope.row.childCategory }}</span>
+            <span v-else>{{ scope.row.childCategoryName }}</span>
           </template>
         </el-table-column>
 
@@ -164,12 +164,12 @@
           getGoodsCategory(this.listQuery)
             .then(response => {
               this.total = response.data.total
-              const items = response.data.goodsList
+              const items = response.data.list
               this.goodsData = items.map(v => {
                 this.$set(v, 'edit', false)
-                v.tempParentCategory = v.parentCategory
+                v.tempParentCategory = v.parentCategoryName
                 v.tempParentCategoryId = v.parentCategoryId
-                v.tempChildCategory = v.childCategory
+                v.tempChildCategory = v.childCategoryName
                 v.tempChildCategoryId = v.childCategoryId
                 return v
               })
