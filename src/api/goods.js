@@ -3,8 +3,8 @@ import request from '@/utils/request'
 export function getGoodsList(queryType, queryList) {
   return request({
     url: '/goods/goods-list',
-    method: 'get',
-    params: {
+    method: 'post',
+    data: {
       queryType: queryType,
       queryList: queryList
     }
