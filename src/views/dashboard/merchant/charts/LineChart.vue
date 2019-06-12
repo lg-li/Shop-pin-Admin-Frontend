@@ -35,7 +35,8 @@
     },
     data() {
       return {
-        chart: null
+        chart: null,
+        date:[]
       }
     },
     watch: {
@@ -47,6 +48,7 @@
       }
     },
     mounted() {
+      this.setDate()
       this.$nextTick(() => {
         this.initChart()
       })
@@ -64,9 +66,10 @@
         this.setOptions(this.chartData)
       },
       setOptions({ commentNum, viewNum } = {}) {
+
         this.chart.setOption({
           xAxis: {
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+            data: this.date,
             boundaryGap: false,
             axisTick: {
               show: false
@@ -131,6 +134,20 @@
               animationEasing: 'quadraticOut'
             }]
         })
+      },
+      setDate() {
+        for (let i = 7;i >= 1;i--) {
+          this.date.push(this.getDay(i))
+        }
+      },
+      getDay(day) {
+        var today = new Date()
+        var targetday_milliseconds = today.getTime() - 1000 * 60 * 60 * 24 * day
+        today.setTime(targetday_milliseconds)
+        var tMonth = today.getMonth()
+        var tDate = today.getDate()
+        tMonth = tMonth + 1
+        return tMonth + '-' + tDate
       }
     }
   }

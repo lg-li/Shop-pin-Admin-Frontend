@@ -3,7 +3,7 @@
     <el-card style="margin-bottom: 8px">
       <div class="filter-item">
         <div class="filter-input">
-          <el-input v-model="listQuery.Key" style="width: 250px" placeholder="商品名称 编号"/>
+          <el-input v-model="listQuery.Key" style="width: 250px" placeholder="商品名称 编号" />
         </div>
         <el-button style="margin-left:8px" @click="searchGoods">搜索</el-button>
         <el-button @click="refreshGoods">刷新</el-button>
@@ -41,7 +41,8 @@
                 <span class="good-text-info">{{ good.name }}</span>
               </div>
               <div style="margin-bottom: 20px"><span
-                style="font-size: 30px;font-weight: 500">{{ good.nums }}</span>
+                                                 style="font-size: 30px;font-weight: 500"
+                                               >{{ good.nums }}</span>
                 <span>条评论</span>
               </div>
             </el-col>
@@ -65,7 +66,7 @@
                 :fit="contain"
                 lazy
               />
-              <el-col :span="16"/>
+              <el-col :span="16" />
               <span>{{ comment.nickname }}</span>
               <el-tag style="float: right;" :type="comment.grade===0?'success':comment.grade===1?'warning':'danger'">
                 <span>{{ comment.grade===0?'好评':comment.grade===1?'中评':'差评' }}</span>
@@ -74,17 +75,21 @@
             <el-row>
               <span>{{ comment.content }}</span>
             </el-row>
-            <el-divider/>
+            <el-divider />
             <el-row>
               <span style="font-weight: 500;font-size: 14px">产品评分</span>
-              <el-rate v-model="comment.productScore" disabled :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="5"/>
+              <el-rate v-model="comment.productScore" disabled :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="5" />
             </el-row>
             <el-row>
               <span style="font-weight: 500;font-size: 14px">服务评分</span>
-              <el-rate v-model=" comment.serviceScore" disabled :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="5"/>
+              <el-rate v-model=" comment.serviceScore" disabled :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="5" />
               <span style="float:right">
-                <el-button v-if="comment.merchantCommentContent===''" type="text" style="margin-right: 4px"
-                           @click.native="replyComment(comment)">回复</el-button>
+                <el-button
+                  v-if="!comment.merchantCommentContent"
+                  type="text"
+                  style="margin-right: 4px"
+                  @click.native="replyComment(comment)"
+                >回复</el-button>
                 <el-button type="text" @click.native="seeCommentDetail(comment)">详情</el-button>
               </span>
             </el-row>
@@ -113,32 +118,36 @@
           <span>{{ commentTemp.nickname }}</span>
         </el-form-item>
         <el-form-item label="购买商品">
-          <span>美丽旗舰店的花蝴蝶</span>
+          <span>{{ commentTemp.name }}</span>
+
+          <el-tag type="info" style="margin-right: 4px" v-if="commentTemp.sku" v-for="a in commentTemp.sku.split(';')">  {{ a }}</el-tag>
         </el-form-item>
         <el-form-item label="评论">
           <span>{{ commentTemp.content }}</span>
-          <el-tag style="float: right;"
-                  :type="commentTemp.grade===0?'success':commentTemp.grade===1?'warning':'danger'">
+          <el-tag
+            style="float: right;"
+            :type="commentTemp.grade===0?'success':commentTemp.grade===1?'warning':'danger'"
+          >
             <span>{{ commentTemp.grade===0?'好评':commentTemp.grade===1?'中评':'差评' }}</span>
           </el-tag>
         </el-form-item>
         <el-form-item label="评论图片">
           <el-image
             class="commentImg"
-            :src="commentTemp.images_urls"
+            :src="commentTemp.imagesUrls"
             :fit="contain"
             lazy
           />
         </el-form-item>
         <el-form-item label="评论时间">
-          <span>{{ commentTemp.createTime }}</span>
+          <span>{{ commentTemp.createTime | parseTime }}</span>
         </el-form-item>
         <div v-if="commentTemp.merchantCommentContent!==''">
           <el-form-item label="商家回复" prop="merchantCommentContent">
             <span> {{ commentTemp.merchantCommentContent }}</span>
           </el-form-item>
           <el-form-item label="商家回复时间" prop="merchantCommentTime">
-            <span> {{ commentTemp.merchantCommentTime }}</span>
+            <span> {{ commentTemp.merchantCommentTime | parseTime}}</span>
           </el-form-item>
         </div>
       </el-form>
@@ -153,13 +162,15 @@
       <el-form ref="dataForm" :model="commentTemp" label-position="left" label-width="70px" style="margin:16px">
         <el-form-item label="评论">
           <span>{{ commentTemp.content }}</span>
-          <el-tag style="float: right;"
-                  :type="commentTemp.grade===0?'success':commentTemp.grade===1?'warning':'danger'">
+          <el-tag
+            style="float: right;"
+            :type="commentTemp.grade===0?'success':commentTemp.grade===1?'warning':'danger'"
+          >
             <span>{{ commentTemp.grade===0?'好评':commentTemp.grade===1?'中评':'差评' }}</span>
           </el-tag>
         </el-form-item>
         <el-form-item label="回复" prop="merchantCommentContent">
-          <el-input v-model="commentTemp.merchantCommentContent" :rows="8" type="textarea"/>
+          <el-input v-model="commentTemp.merchantCommentContent" :rows="8" type="textarea" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -175,119 +186,138 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import { getGoodsWithComment } from '@/api/goods'
-  import { getCommentByGoods } from '@/api/comment'
-  import Pagination from '@/components/Pagination'
-  import { formatTime } from '../../utils'
+import { mapGetters } from 'vuex'
+import { getGoodsWithComment } from '@/api/goods'
+import { getCommentByGoods,replyComment} from '@/api/comment'
+import Pagination from '@/components/Pagination'
+import { parseTime } from '../../utils'
 
-  export default {
-    components: {
-      Pagination
-    },
-    computed: {
-      ...mapGetters([
-        'current_store'
-      ])
-    },
+export default {
+  components: {
+    Pagination
+  },
+  computed: {
+    ...mapGetters([
+      'current_store'
+    ])
+  },
+  filters: {
+    parseTime
+  },
 
-    data() {
-      return {
-        total: 0,
-        goodsData: [],
-        commentData: [],
-        commentTemp: {
-          user: {
-            avatarUrl: ''
-          }
-        },
-        listQuery: {
-          productId: 0,
-          pageNumber: 1,
-          pageSize: 10,
-          sort: '+id',
-        },
-        detailDialog: false,
-        commentDialog: false,
-        goodsListLoading: false,
-        commentListLoading: false
+  data() {
+    return {
+      total: 0,
+      goodsData: [],
+      commentData: [],
+      commentTemp: {
+        sku:''
+      },
+      listQuery: {
+        productId: 0,
+        pageNumber: 1,
+        pageSize: 10,
+        sort: '+id'
+      },
+      detailDialog: false,
+      commentDialog: false,
+      goodsListLoading: false,
+      commentListLoading: false
+    }
+  },
+  mounted() {
+    this.getList()
+  },
+  methods: {
+    async getList() {
+      this.goodsListLoading = true
+      await new Promise((resolve, reject) => {
+        getGoodsWithComment(this.listQuery)
+          .then(response => {
+            this.goodsData = response.data.list
+            this.goodsListLoading = false
+          }).catch(error => {
+            reject(error)
+          })
+      })
+    },
+    confirmEdit(row) {
+      if (row.tempChildCategory === '') {
+        this.$message({
+          message: `商品 ${row.name} 的子级分类未选择`,
+          type: 'warning'
+        })
+        return
+      }
+      row.edit = false
+      row.parentCategory = row.tempParentCategory
+      row.parentCategoryId = row.tempParentCategoryId
+      row.childCategory = row.tempChildCategory
+      row.childCategoryId = row.tempChildCategoryId
+      this.$message({
+        message: `商品 ${row.name} 的分类修改成功`,
+        type: 'success'
+      })
+    },
+    handleEdit(row) {
+      row.edit = !row.edit
+      for (const val of this.categoryData) {
+        if (val.parent.id === row.parentCategoryId) {
+          this.childData = val.child
+        }
       }
     },
-    mounted() {
+    searchGoods() {
       this.getList()
     },
-    methods: {
-      async getList() {
-        this.goodsListLoading = true
-        await new Promise((resolve, reject) => {
-          getGoodsWithComment(this.listQuery)
-            .then(response => {
-              this.goodsData = response.data.list
-              this.goodsListLoading = false
-            }).catch(error => {
+    refreshGoods() {
+      this.getList()
+    },
+    seeCommentDetail(comment) {
+      this.commentTemp = Object.assign({}, comment)
+      this.detailDialog = true
+    },
+    replyComment(comment) {
+      this.commentTemp = Object.assign({}, comment)
+      this.commentDialog = true
+    },
+
+    async updateComment() {
+      await new Promise((resolve, reject) => {
+        replyComment({
+          commentId: this.commentTemp.id,
+          commentContent: this.commentTemp.merchantCommentContent,
+        })
+          .then(response => {
+            this.$message({
+                message: '评论成功',
+                type: 'success'
+              }
+            )
+            this.commentDialog = false
+            this.getList()
+          }).catch(error => {
+          this.$message.error('评论失败 请重试')
+          reject(error)
+        })
+      })
+    },
+    async getCommentByGoods(goods) {
+      this.total = goods.nums
+      this.listQuery.productId = goods.id
+      this.commentListLoading = true
+      await new Promise((resolve, reject) => {
+        getCommentByGoods(goods.id, this.listQuery)
+          .then(response => {
+            this.commentData = response.data.list
+            this.commentListLoading = false
+          }).catch(error => {
             reject(error)
           })
-        })
-      },
-      confirmEdit(row) {
-        if (row.tempChildCategory === '') {
-          this.$message({
-            message: `商品 ${row.name} 的子级分类未选择`,
-            type: 'warning'
-          })
-          return
-        }
-        row.edit = false
-        row.parentCategory = row.tempParentCategory
-        row.parentCategoryId = row.tempParentCategoryId
-        row.childCategory = row.tempChildCategory
-        row.childCategoryId = row.tempChildCategoryId
-        this.$message({
-          message: `商品 ${row.name} 的分类修改成功`,
-          type: 'success'
-        })
-      },
-      handleEdit(row) {
-        row.edit = !row.edit
-        for (const val of this.categoryData) {
-          if (val.parent.id === row.parentCategoryId) {
-            this.childData = val.child
-          }
-        }
-      },
-      searchGoods() {
-        this.getList()
-      },
-      refreshGoods() {
-        this.getList()
-      },
-      seeCommentDetail(comment) {
-        this.commentTemp = Object.assign({}, comment)
-        this.detailDialog = true
-      },
-      replyComment(comment) {
-        this.commentTemp = Object.assign({}, comment)
-        this.commentDialog = true
-      },
-      updateComment() {
-        this.commentDialog = false
-      },
-      async getCommentByGoods(goods) {
-        this.total = goods.nums
-        this.listQuery.productId = goods.id
-        this.commentListLoading = true
-        await new Promise((resolve, reject) => {
-          getCommentByGoods(goods.id, this.listQuery)
-            .then(response => {
-              this.commentData = response.data.list
-              this.commentListLoading = false
-            }).catch(error => {
-            reject(error)
-          })
-        })
-      }
+      })
     }
   }
+}
 </script>
 
 <style>

@@ -64,19 +64,19 @@
 
         <el-table-column min-width="100px" align="center" label="创建时间">
           <template slot-scope="scope">
-            <span>{{ scope.row.createTime }}</span>
+            <span>{{ scope.row.createTime | parseTime}}</span>
           </template>
         </el-table-column>
 
         <el-table-column min-width="100px" align="center" label="拼成时间">
           <template slot-scope="scope">
-            <span>{{ scope.row.actualFinishTime }}</span>
+            <span v-if="scope.row.actualFinishTime">{{ scope.row.actualFinishTime | parseTime}}</span>
           </template>
         </el-table-column>
 
         <el-table-column min-width="100px" align="center" label="结束时间">
           <template slot-scope="scope">
-            <span>{{ scope.row.closeTime }}</span>
+            <span v-if="scope.row.closeTime">{{ scope.row.closeTime | parseTime }}</span>
           </template>
         </el-table-column>
 
@@ -90,7 +90,7 @@
 
         <el-table-column label="内含订单" width="100px" type="expand">
           <template slot-scope="scope">
-            <el-card v-for="(order,index) in scope.row.singleOrder" class="order-card">
+            <el-card v-for="(order,index) in scope.row.orderIndividuals" class="order-card">
               <div slot="header" class="clearfix">
                 <span>订单编号 {{ order.id }}</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="handleDetailOrder(order)">查看详情
@@ -108,7 +108,7 @@
                 <el-form-item label="支付状态">
                   <el-tag :type="order.paid | payStatusFilter">
                     <span v-if="order.paid===0">未支付</span>
-                    <span v-else>{{ order.payType }}</span>
+                    <span v-else>{{ order.payType | payTypeFilter}}</span>
                   </el-tag>
                   <el-tag v-if="order.refundStatus===1" style="margin-top:4px" type="danger">
                     申请退款
@@ -131,19 +131,19 @@
           </template>
         </el-table-column>
 
-        <el-table-column min-width="110px" align="center" label="操作">
-          <template slot-scope="scope">
-            <el-button
-              v-if="scope.row.status===0"
-              type="primary"
-              plain
-              size="mini"
-              @click="handleChangeFinishTime(scope.row)"
-            >
-              修改截止时间
-            </el-button>
-          </template>
-        </el-table-column>
+<!--        <el-table-column min-width="110px" align="center" label="操作">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-button-->
+<!--              v-if="scope.row.status===0"-->
+<!--              type="primary"-->
+<!--              plain-->
+<!--              size="mini"-->
+<!--              @click="handleChangeFinishTime(scope.row)"-->
+<!--            >-->
+<!--              修改截止时间-->
+<!--            </el-button>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
 
       </el-table>
       <pagination
@@ -166,6 +166,7 @@
   import { getGroupOrderList } from '@/api/order'
   import orderDetailWindow from './orderDetailWindow'
   import Pagination from '@/components/Pagination'
+  import {parseTime} from '@/utils/index'
 
   export default {
     name: 'GroupOrderManage',
@@ -174,6 +175,7 @@
       Pagination
     },
     filters: {
+      parseTime,
       orderStatusFilter(status) {
         const statusMap = {
           0: 'danger',
@@ -199,8 +201,15 @@
       },
       payStatusFilter(status) {
         const statusMap = {
-          0: 'danger',
-          1: 'success'
+          false: 'danger',
+          true: 'success'
+        }
+        return statusMap[status]
+      },
+      payTypeFilter(status) {
+        const statusMap = {
+          'WECHAT': '微信支付',
+          'BALANCE': '余额支付'
         }
         return statusMap[status]
       }

@@ -35,3 +35,26 @@ export function getTimePoint() {
   })
 }
 
+export function addTimePoint(closeBatch) {
+  return request({
+    url: '/manager/store/close-batch',
+    method: 'post',
+    data: { closeBatch: closeBatch }
+  })
+}
+
+export function deleteTimePoint(closeBatchList) {
+  return request({
+    url: '/manager/store/close-batch',
+    method: 'delete',
+    data: closeBatchList
+  })
+}
+
+export function uploadImage(base64) {
+  return request({
+    url: '/manager/store/upload',
+    method: 'post',
+    data: {image:base64}
+  })
+}

@@ -4,14 +4,21 @@ export function getGoodsList(queryType, queryList) {
   return request({
     url: '/goods/goods-list',
     method: 'post',
-    data: {
-      queryType: queryType,
+    data: queryList
+  })
+}
+
+export function getGoodsWithComment(queryList) {
+  return request({
+    url: '/goods/goods-with-comment',
+    methods: 'get',
+    params: {
       queryList: queryList
     }
   })
 }
 
-export function getGoodsWithComment(queryList) {
+export function addGoods(newGoods) {
   return request({
     url: '/goods/goods-with-comment',
     methods: 'get',

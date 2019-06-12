@@ -7,3 +7,11 @@ export function getCommentByGoods(productId, queryType) {
     data: queryType
   })
 }
+
+export function replyComment(reply) {
+  return request({
+    url: '/comment/reply-comment',
+    method: 'post',
+    data: reply
+  })
+}

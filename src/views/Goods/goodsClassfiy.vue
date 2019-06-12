@@ -3,7 +3,7 @@
     <el-card style="margin-bottom: 8px">
       <div class="filter-item">
         <div class="filter-input">
-          <el-input v-model="listQuery.Key" style="width: 250px" placeholder="商品名称 编号"/>
+          <el-input v-model="listQuery.Key" style="width: 250px" placeholder="商品名称 编号" />
         </div>
         <el-button style="margin-left:8px" @click="searchGoods">搜索</el-button>
         <el-button @click="refreshGoods">刷新</el-button>
@@ -122,135 +122,135 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import { getGoodsCategory, getCategoryList } from '@/api/goods'
-  import Pagination from '@/components/Pagination'
+import { mapGetters } from 'vuex'
+import { getGoodsCategory, getCategoryList } from '@/api/goods'
+import Pagination from '@/components/Pagination'
 
-  export default {
-    components: {
-      Pagination
-    },
-    computed: {
-      ...mapGetters([
-        'current_store'
-      ])
-    },
+export default {
+  components: {
+    Pagination
+  },
+  computed: {
+    ...mapGetters([
+      'current_store'
+    ])
+  },
 
-    data() {
-      return {
-        total: 0,
-        goodsData: [],
-        categoryData: [],
-        childData: [],
-        listQuery: {
-          pageNumber: 1,
-          pageSize: 10,
-          sort: '+id',
-          Key: ''
-        },
-        loading: false
-      }
-    },
-    mounted() {
-      this.getList()
-    },
-    created() {
-      this.getCategoryList()
-    },
-    methods: {
-      async getList() {
-        this.loading = true
-        await new Promise((resolve, reject) => {
-          getGoodsCategory(this.listQuery)
-            .then(response => {
-              this.total = response.data.total
-              const items = response.data.list
-              this.goodsData = items.map(v => {
-                this.$set(v, 'edit', false)
-                v.tempParentCategory = v.parentCategoryName
-                v.tempParentCategoryId = v.parentCategoryId
-                v.tempChildCategory = v.childCategoryName
-                v.tempChildCategoryId = v.childCategoryId
-                return v
-              })
-              this.loading = false
-            }).catch(error => {
-            reject(error)
-          })
-        })
+  data() {
+    return {
+      total: 0,
+      goodsData: [],
+      categoryData: [],
+      childData: [],
+      listQuery: {
+        pageNumber: 1,
+        pageSize: 10,
+        sort: '+id',
+        Key: ''
       },
-      async getCategoryList() {
-        await new Promise((resolve, reject) => {
-          getCategoryList().then(response => {
-            this.categoryData = response.data.categoryList
+      loading: false
+    }
+  },
+  mounted() {
+    this.getList()
+  },
+  created() {
+    this.getCategoryList()
+  },
+  methods: {
+    async getList() {
+      this.loading = true
+      await new Promise((resolve, reject) => {
+        getGoodsCategory(this.listQuery)
+          .then(response => {
+            this.total = response.data.total
+            const items = response.data.list
+            this.goodsData = items.map(v => {
+              this.$set(v, 'edit', false)
+              v.tempParentCategory = v.parentCategoryName
+              v.tempParentCategoryId = v.parentCategoryId
+              v.tempChildCategory = v.childCategoryName
+              v.tempChildCategoryId = v.childCategoryId
+              return v
+            })
+            this.loading = false
           }).catch(error => {
             reject(error)
           })
+      })
+    },
+    async getCategoryList() {
+      await new Promise((resolve, reject) => {
+        getCategoryList().then(response => {
+          this.categoryData = response.data.categoryList
+        }).catch(error => {
+          reject(error)
         })
-      },
-      setParent(parentId, row) {
-        this.childData = []
-        row.tempChildCategory = ''
-        row.tempChildCategoryId = ''
-        for (const val of this.categoryData) {
-          if (val.parent.id === parentId) {
-            this.childData = val.child
-            row.tempParentCategory = val.parent.category_name
-          }
+      })
+    },
+    setParent(parentId, row) {
+      this.childData = []
+      row.tempChildCategory = ''
+      row.tempChildCategoryId = ''
+      for (const val of this.categoryData) {
+        if (val.parent.id === parentId) {
+          this.childData = val.child
+          row.tempParentCategory = val.parent.category_name
         }
-      },
-      setChild(childId, row) {
-        for (const val of this.childData) {
-          if (val.id === childId) {
-            row.tempChildCategory = val.category_name
-          }
       }
-      },
-      confirmEdit(row) {
-        if (row.tempChildCategory === '') {
-          this.$message({
-            message: `商品 ${row.name} 的子级分类未选择`,
-            type: 'warning'
-          })
-          return
+    },
+    setChild(childId, row) {
+      for (const val of this.childData) {
+        if (val.id === childId) {
+          row.tempChildCategory = val.category_name
         }
-        row.edit = false
-        row.parentCategoryName = row.tempParentCategory
-        row.parentCategoryId = row.tempParentCategoryId
-        row.childCategoryName = row.tempChildCategory
-        row.childCategoryId = row.tempChildCategoryId
+      }
+    },
+    confirmEdit(row) {
+      if (row.tempChildCategory === '') {
         this.$message({
-          message: `商品 ${row.name} 的分类修改成功`,
-          type: 'success'
-        })
-      },
-      cancelEdit(row) {
-        row.tempParentCategory = row.parentCategoryName
-        row.tempParentCategoryId = row.parentCategoryId
-        row.tempChildCategory = row.childCategoryName
-        row.tempChildCategoryId = row.childCategoryId
-        row.edit = false
-        this.$message({
-          message: `商品 ${row.name} 的分类修改已撤回`,
+          message: `商品 ${row.name} 的子级分类未选择`,
           type: 'warning'
         })
-      },
-      handleEdit(row) {
-        row.edit = !row.edit
-        for (const val of this.categoryData) {
-          if (val.parent.id === row.parentCategoryId) {
-            this.childData = val.child
-          }
-        }
-      },
-      searchGoods() {
-        this.getList()
-      },
-      refreshGoods() {
-        this.getList()
+        return
       }
+      row.edit = false
+      row.parentCategoryName = row.tempParentCategory
+      row.parentCategoryId = row.tempParentCategoryId
+      row.childCategoryName = row.tempChildCategory
+      row.childCategoryId = row.tempChildCategoryId
+      this.$message({
+        message: `商品 ${row.name} 的分类修改成功`,
+        type: 'success'
+      })
+    },
+    cancelEdit(row) {
+      row.tempParentCategory = row.parentCategoryName
+      row.tempParentCategoryId = row.parentCategoryId
+      row.tempChildCategory = row.childCategoryName
+      row.tempChildCategoryId = row.childCategoryId
+      row.edit = false
+      this.$message({
+        message: `商品 ${row.name} 的分类修改已撤回`,
+        type: 'warning'
+      })
+    },
+    handleEdit(row) {
+      row.edit = !row.edit
+      for (const val of this.categoryData) {
+        if (val.parent.id === row.parentCategoryId) {
+          this.childData = val.child
+        }
+      }
+    },
+    searchGoods() {
+      this.getList()
+    },
+    refreshGoods() {
+      this.getList()
     }
   }
+}
 </script>
 
 <style>

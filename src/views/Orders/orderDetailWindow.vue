@@ -45,7 +45,7 @@
                 </div>
                 <div style="margin-bottom: 8px"><span class="good-text">商品价格</span> <span class="good-text-info">{{ good.product.price }}</span>
                 </div>
-                <div style="margin-bottom: 8px"><span class="good-text">商品数量</span> <span class="good-text-info">{{ good.amount }}</span>
+                <div style="《margin-bottom: 8px"><span class="good-text">商品数量</span> <span class="good-text-info">{{ good.amount }}</span>
                 </div>
               </el-col>
             </el-card>

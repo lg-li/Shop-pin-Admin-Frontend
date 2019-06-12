@@ -8,6 +8,7 @@
     <el-col :span="16">
 
       <el-table
+        v-loading="timePointLoading"
         :data="timePointList"
         stripe
         style="width: 80%"
@@ -28,7 +29,7 @@
           align="center"
         >
           <template slot-scope="scope">
-            <i class="el-icon-time"/>
+            <i class="el-icon-time" />
             <span style="margin-left: 10px">{{ millisecondsToTimeString(scope.row.time) }}</span>
           </template>
         </el-table-column>
@@ -58,88 +59,108 @@
 </template>
 
 <script>
-  import { getTimePoint } from '../../api/store'
+import { getTimePoint, addTimePoint, deleteTimePoint } from '../../api/store'
 
-  export default {
-    name: 'TimeSet',
-    data() {
-      return {
-        timePointList: [],
-        multiTimeSet: [],
-        addingNewTime: false,
-        newTime: ''
+export default {
+  name: 'TimeSet',
+  data() {
+    return {
+      timePointList: [],
+      timePointLoading: false,
+      multiTimeSet: [],
+      addingNewTime: false,
+      newTime: '',
+      temp: ''
+    }
+  },
+
+  mounted() {
+    this.getList()
+    this.newTime = new Date()
+  },
+  methods: {
+    async getList() {
+      this.timePointLoading = true
+      await new Promise((resolve, reject) => {
+        getTimePoint().then(response => {
+          this.timePointLoading = false
+          this.timePointList = response.data.list
+          for (let i = 0; i <= this.timePointList.length; i++) {
+            this.timePointList[i].number = i + 1
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    handleSelectionChange(val) {
+      this.multiTimeSet = val
+    },
+    async handleAdd() {
+      this.addingNewTime = false
+      this.temp = this.timeStringToMilliseconds(this.newTime.toString().split(' ')[4])
+      await new Promise((resolve, reject) => {
+        addTimePoint(this.temp).then(response => {
+          this.$message({
+            message: '添加成功',
+            type: 'success'
+          })
+          this.getList()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+      this.newTime = ''
+      this.temp = ''
+    },
+    async handleDelete() {
+      if (this.multiTimeSet.length === 0) {
+        this.$message({
+          message: '请选择要删除的时间点',
+          type: 'warning'
+        })
+        return
       }
-    },
-
-    mounted() {
-      this.getList()
-      this.newTime = new Date()
-    },
-    methods: {
-      async getList() {
+      this.$confirm('确定要删除' + this.multiTimeSet.length + '个时间点吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
         await new Promise((resolve, reject) => {
-          getTimePoint().then(response => {
-            this.timePointList = response.data.list
-            for (let i = 0; i <= this.timePointList.length; i++) {
-              this.timePointList[i].number = i + 1
-            }
+          deleteTimePoint({ closeBatch: this.multiTimeSet
+          }).then(response => {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
+            this.getList()
           }).catch(error => {
             reject(error)
           })
         })
-      },
-      handleSelectionChange(val) {
-        this.multiTimeSet = val
-      },
-      handleAdd() {
-        const number = this.timePointList.length + 1
-        this.$message.error(typeof this.newTime)
-        this.timePointList.push({
-          number: number,
-          time: this.newTime
-        })
-        this.newTime = ''
-      },
-      handleDelete() {
-        if (this.multiTimeSet.length === 0) {
-          this.$message({
-            message: '请选择要删除的时间点',
-            type: 'warning'
-          })
-          return
-        }
-        this.$confirm('确定要删除' + this.multiTimeSet.length + '个时间点吗？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-        })
-      },
-      millisecondsToTimeString(milliseconds) {
-        milliseconds += 8 * 3600000 // 增加 timestamp offset
-        const seconds = Math.floor(milliseconds / 1000)
-        let hours = String(Math.floor(seconds / 3600) - 14)
-        let minutes = String(Math.floor((seconds % 3600) / 60))
-        if (hours.length < 2) {
-          hours = '0' + hours
-        }
-        if (minutes.length < 2) {
-          minutes = '0' + minutes
-        }
-        return String(hours + ':' + minutes)
-      },
-      timeStringToMilliseconds(timeString) {
-        const hoursAndMinutes = timeString.split(':')
-        const hours = Number(hoursAndMinutes[0])
-        const minutes = Number(hoursAndMinutes[1])
-        return (1000 * (minutes * 60 + hours * 3600)) - 8 * 3600000 // 减少 timestamp offset
+      })
+    },
+    millisecondsToTimeString(milliseconds) {
+      milliseconds += 8 * 3600000 // 增加 timestamp offset
+      const seconds = Math.floor(milliseconds / 1000)
+      let hours = String(Math.floor(seconds / 3600) - 14)
+      let minutes = String(Math.floor((seconds % 3600) / 60))
+      if (hours.length < 2) {
+        hours = '0' + hours
       }
+      if (minutes.length < 2) {
+        minutes = '0' + minutes
+      }
+      return String(hours + ':' + minutes)
+    },
+    timeStringToMilliseconds(timeString) {
+      const hoursAndMinutes = timeString.split(':')
+      const hours = Number(hoursAndMinutes[0]) + 14
+      const minutes = Number(hoursAndMinutes[1])
+      return (1000 * (minutes * 60 + hours * 3600)) - 8 * 3600000 // 减少 timestamp offset
     }
   }
+}
 </script>
 
 <style scoped>

@@ -55,7 +55,7 @@
     <el-row :gutter="20">
       <el-col :xs="24" :sm="12" :lg="12" class="card-line">
         <el-card>
-          <line-chart :chart-data="storeData.chartData"/>
+          <line-chart :chart-data="storeData.chartData" />
         </el-card>
       </el-col>
 

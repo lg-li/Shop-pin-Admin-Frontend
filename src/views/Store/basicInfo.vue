@@ -11,7 +11,7 @@
           </div>
 
           <div class="store-info-item">
-            <div class="item-name">店铺图片</div>
+            <div class="item-name">店铺LOGO</div>
             <el-image
               :src="current_store.logoUrl"
               style="width: 30%; height: 30%"
@@ -31,7 +31,7 @@
 
           <div class="store-info-item">
             <div class="item-name">创建时间</div>
-            <div class="item-data">{{ current_store.createTime }}</div>
+            <div class="item-data">{{ current_store.createTime |parseTime }}</div>
           </div>
         </div>
       </el-col>
@@ -63,7 +63,7 @@
         <el-form-item label="店铺邮箱" prop="email">
           <el-input v-model="storeTemp.email"/>
         </el-form-item>
-        <el-form-item label="店铺图片" prop="url">
+        <el-form-item label="店铺LOGO" prop="url">
           <el-button style="margin-bottom: 8px" @click="toggleShow">设置图片</el-button>
           <my-upload
             v-model="show"
@@ -71,7 +71,7 @@
             :field="storeTemp.name+'_store_logo'"
             :width="200"
             :height="200"
-            url="https://sm.ms/api/upload"
+            url="http://localhost:5488/manager/store/upload"
             img-format="png"
             :params="uploadParams"
             @crop-success="cropSuccess"
@@ -100,12 +100,16 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import myUpload from 'vue-image-crop-upload'
+  import myUpload from '@/components/ImageUpload/index'
+  import {parseTime} from '@/utils/index'
 
   export default {
     name: 'Store',
     components: {
       'my-upload': myUpload
+    },
+    filters:{
+      parseTime
     },
     computed: {
       ...mapGetters([
@@ -147,9 +151,10 @@
         this.imgDataUrl = imgDataUrl
       },
       cropUploadSuccess(jsonData, field) {
-        console.log('-------- upload success --------')
+        // console.log('-------- upload success --------')
         console.log(jsonData)
-        console.log('field: ' + field)
+        // console.log('field: ' + field)
+        this.storeTemp.imageDataUrl = jsonData.data.url
       },
       cropUploadFail(status, field) {
         console.log('-------- upload fail --------')

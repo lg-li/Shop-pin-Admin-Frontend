@@ -30,3 +30,11 @@ export function deliverProduct(deliverInfo) {
     data: deliverInfo
   })
 }
+
+export function addOrderRemark(remarkInfo) {
+  return request({
+    url: '/admin/order/order-remark',
+    method: 'put',
+    data: remarkInfo
+  })
+}

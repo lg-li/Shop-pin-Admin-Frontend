@@ -113,7 +113,7 @@
 
         <el-table-column width="100px" align="center" label="支付时间">
           <template slot-scope="scope">
-            <span v-if="scope.row.payTime">{{ scope.row.payTime| parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+            <span v-if="scope.row.payTime">{{ scope.row.payTime| parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
             <span v-else>无</span>
           </template>
         </el-table-column>
@@ -183,6 +183,7 @@
     </el-card>
 
     <el-dialog top="4vh" title="修改订单" :visible.sync="orderChangeDialog" close-on-click-modal="false">
+      <div v-if="addStep===0">
       <el-form ref="dataForm" :model="orderTemp" label-position="left" label-width="100px" style="margin:16px;">
         <el-form-item label="订单编号" prop="id">
           <el-input v-model="orderTemp.id" :disabled="true" />
@@ -203,6 +204,7 @@
           <el-input v-model="orderTemp.gainedCredit" />
         </el-form-item>
       </el-form>
+      </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="orderChangeDialog = false">
           取消
@@ -234,7 +236,7 @@
               v-for="item in deliverNameList"
               :key="item.id"
               :label="item.name"
-              :value="item.id"
+              :value="item.name"
             />
           </el-select>
         </el-form-item>
@@ -459,7 +461,8 @@ export default {
         deliverProduct({
           orderIndividualId: this.orderTemp.id,
           deliveryType: this.orderTemp.deliveryType,
-          deliveryId: this.orderTemp.deliveryId
+          deliveryId: this.orderTemp.deliveryId,
+          deliveryName: this.orderTemp.deliveryName
         })
           .then(response => {
             this.$message({
