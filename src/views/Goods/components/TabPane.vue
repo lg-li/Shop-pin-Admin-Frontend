@@ -195,6 +195,9 @@
         <el-form-item label="搜索关键字" prop="postage">
           <el-input v-model="newGoodsTemp.keyword" />
         </el-form-item>
+        <el-form-item label="描述" prop="total_price">
+          <el-input v-model="newGoodsTemp.description" />
+        </el-form-item>
         <el-form-item label="显示价格" prop="pay_price">
           <el-input v-model="newGoodsTemp.price" />
         </el-form-item>
@@ -330,7 +333,7 @@
 </template>
 
 <script>
-import { getGoodsList,addProduct } from '@/api/goods'
+import { getGoodsList,addProduct,addSkuDefinition,addSkuValue } from '@/api/goods'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 
@@ -450,10 +453,31 @@ export default {
       if (this.addStep === 0) {
         this.addNewProduct()
       }
+      if (this.addStep ===1) {
+        this.addNewAttributeList()
+      }
     },
     async addNewProduct() {
       await new Promise((resolve, reject) => {
         addProduct(this.newGoodsTemp)
+          .then(response => {
+            this.newGoodsTemp.id = response.data.id
+            this.$message({
+              message: '商品创建成功',
+              type: 'success'
+            })
+            this.addStep++
+          }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    async addNewAttributeList() {
+      await new Promise((resolve, reject) => {
+        addSkuDefinition({
+          productId : this.newGoodsTemp.id,
+          attribute:this.attributeList
+        })
           .then(response => {
             this.$message({
               message: '商品创建成功',
@@ -465,6 +489,7 @@ export default {
         })
       })
     }
+
   }
 }
 </script>
