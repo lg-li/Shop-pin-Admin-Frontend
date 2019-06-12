@@ -1,11 +1,9 @@
 import request from '@/utils/request'
 
-export function getCommentByGoods(productId) {
+export function getCommentByGoods(productId, queryType) {
   return request({
     url: '/comment/goods-comment',
-    methods: 'get',
-    params: {
-      productId
-    }
+    method: 'post',
+    data: queryType
   })
 }

@@ -59,7 +59,7 @@
           <div class="filter-item">
             <span>关键字</span>
             <div class="filter-input">
-              <el-input v-model="listQuery.key" style="width: 250px" placeholder="姓名、电话、订单号"/>
+              <el-input v-model="listQuery.key" style="width: 250px" placeholder="姓名、电话、订单号" />
             </div>
           </div>
           <div class="filter-item">
@@ -155,11 +155,11 @@
               size="mini"
               @click="handleDeliverOrder(scope.row)"
             >
-              发货<i class="el-icon-truck el-icon--right"/>
+              发货<i class="el-icon-truck el-icon--right" />
             </el-button>
             <el-dropdown trigger="click">
               <el-button type="primary" plain size="mini">
-                操作<i class="el-icon-arrow-down el-icon--right"/>
+                操作<i class="el-icon-arrow-down el-icon--right" />
               </el-button>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item v-if="scope.row.paid===false" @click.native="handleChangeOrder(scope.row)">修改订单
@@ -185,22 +185,22 @@
     <el-dialog top="4vh" title="修改订单" :visible.sync="orderChangeDialog" close-on-click-modal="false">
       <el-form ref="dataForm" :model="orderTemp" label-position="left" label-width="100px" style="margin:16px;">
         <el-form-item label="订单编号" prop="id">
-          <el-input v-model="orderTemp.id" :disabled="true"/>
+          <el-input v-model="orderTemp.id" :disabled="true" />
         </el-form-item>
         <el-form-item label="商品总价" prop="total_price">
-          <el-input v-model="orderTemp.totalPrice"/>
+          <el-input v-model="orderTemp.totalPrice" />
         </el-form-item>
         <el-form-item label="原始运费" prop="postage">
-          <el-input v-model="orderTemp.postage"/>
+          <el-input v-model="orderTemp.postage" />
         </el-form-item>
         <el-form-item label="实际支付金额" prop="pay_price">
-          <el-input v-model="orderTemp.payPrice"/>
+          <el-input v-model="orderTemp.payPrice" />
         </el-form-item>
         <el-form-item label="实际支付运费" prop="pay_postage">
-          <el-input v-model="orderTemp.payPostage"/>
+          <el-input v-model="orderTemp.payPostage" />
         </el-form-item>
         <el-form-item label="赠送积分" prop="gained_credit">
-          <el-input v-model="orderTemp.gainedCredit"/>
+          <el-input v-model="orderTemp.gainedCredit" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -217,17 +217,16 @@
       <el-form ref="dataForm" :model="orderTemp" label-position="left" label-width="70px" style="margin:16px">
         <el-form-item label="发货类型" prop="delivery_type">
           <el-select v-model="orderTemp.deliveryType" placeholder="请选择发货类型">
-            <el-option label="线上发货" value="0"/>
-            <el-option label="物流发货" value="1"/>
-            <el-option label="同城面交" value="2"/>
-            <el-option label="皮肉交易" value="3"/>
+            <el-option label="线上发货" value="ONLINE" />
+            <el-option label="物流发货" value="EXPRESS" />
+            <el-option label="同城面交" value="OFFLINE" />
           </el-select>
         </el-form-item>
 
         <el-form-item label="物流公司" prop="delivery_name">
           <el-select
             v-model="orderTemp.deliveryName"
-            :disabled="orderTemp.deliveryType!=='1'"
+            :disabled="orderTemp.deliveryType!=='EXPRESS'"
             filterable
             placeholder="可输入公司名称搜索"
           >
@@ -240,7 +239,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="物流单号" prop="delivery_id">
-          <el-input v-model="orderTemp.deliveryId" :disabled="orderTemp.deliveryType!=='1'"/>
+          <el-input v-model="orderTemp.deliveryId" :disabled="orderTemp.deliveryType!=='EXPRESS'" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -256,7 +255,7 @@
     <el-dialog top="4vh" title="订单备注" :visible.sync="orderRemarkDialog">
       <el-form ref="dataForm" :model="orderTemp" label-position="left" label-width="70px" style="margin:16px">
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="orderTemp.merchantRemark" :rows="8" type="textarea"/>
+          <el-input v-model="orderTemp.merchantRemark" :rows="8" type="textarea" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -293,7 +292,7 @@
           </el-button>
         </el-form-item>
         <el-form-item v-if="refundAgree!==0" :label="refundAgree===1?'退款金额':'拒绝理由'">
-          <el-input v-if="refundAgree===1" v-model="orderTemp.refundPrice" placeholder="退款金额"/>
+          <el-input v-if="refundAgree===1" v-model="orderTemp.refundPrice" placeholder="退款金额" />
           <el-input
             v-if="refundAgree===2"
             v-model="orderTemp.refundRefuseReason"
@@ -316,177 +315,195 @@
     </el-dialog>
 
     <el-dialog top="2vh" title="订单详情" :visible.sync="orderDetailDialog">
-      <order-detail-window :order="orderTemp"/>
+      <order-detail-window :order="orderTemp" />
     </el-dialog>
   </div>
 </template>
 
 <script>
 
-  import { getSingleOrderList, getDeliverNameList } from '@/api/order'
-  import { mapGetters } from 'vuex'
-  import { parseTime } from '@/utils/index'
-  import orderDetailWindow from './orderDetailWindow'
-  import Pagination from '@/components/Pagination'
+import { getSingleOrderList, getDeliverNameList, deliverProduct } from '@/api/order'
+import { mapGetters } from 'vuex'
+import { parseTime } from '@/utils/index'
+import orderDetailWindow from './orderDetailWindow'
+import Pagination from '@/components/Pagination'
 
-  export default {
-    name: 'OrderManage',
-    computed: {
-      ...mapGetters([
-        'current_store'
-      ])
-    },
-    components: {
-      orderDetailWindow,
-      Pagination
-    },
-    filters: {
-      parseTime,
-      payTypeFilter(type) {
-        const map = {
-          'BALANCE': '余额支付',
-          'WECHAT': '微信支付'
-        }
-        return map[type]
-      },
-      orderStatusFilter(status) {
-        const statusMap = {
-          0: 'danger',
-          1: 'warning',
-          2: 'info',
-          3: 'success',
-          4: 'danger',
-          5: 'success',
-          6: 'success'
-        }
-        return statusMap[status]
-      },
-      orderWordFilter(word) {
-        const statusMap = {
-          0: '待发货',
-          1: '待收货',
-          2: '待评价',
-          3: '已评价',
-          4: '已退款',
-          5: '已拒绝'
-        }
-        return statusMap[word]
-      },
-      payStatusFilter(status) {
-        const statusMap = {
-          false: 'danger',
-          true: 'success'
-        }
-        return statusMap[status]
+export default {
+  name: 'OrderManage',
+  computed: {
+    ...mapGetters([
+      'current_store'
+    ])
+  },
+  components: {
+    orderDetailWindow,
+    Pagination
+  },
+  filters: {
+    parseTime,
+    payTypeFilter(type) {
+      const map = {
+        'BALANCE': '余额支付',
+        'WECHAT': '微信支付'
       }
+      return map[type]
     },
-    data() {
-      return {
-        orderData: [],
-        listQuery: {
+    orderStatusFilter(status) {
+      const statusMap = {
+        0: 'danger',
+        1: 'warning',
+        2: 'info',
+        3: 'success',
+        4: 'danger',
+        5: 'success',
+        6: 'success'
+      }
+      return statusMap[status]
+    },
+    orderWordFilter(word) {
+      const statusMap = {
+        0: '待发货',
+        1: '待收货',
+        2: '待评价',
+        3: '已评价',
+        4: '已退款',
+        5: '已拒绝'
+      }
+      return statusMap[word]
+    },
+    payStatusFilter(status) {
+      const statusMap = {
+        false: 'danger',
+        true: 'success'
+      }
+      return statusMap[status]
+    }
+  },
+  data() {
+    return {
+      orderData: [],
+      listQuery: {
         orderTypeChoice: '0',
         orderDateChoice: '0',
-          key: '',
-          pageNumber: 1,
-          pageSize: 10,
-          sort: '+id'
-        },
-        loading: false,
-        orderChangeDialog: false,
-        orderRemarkDialog: false,
-        orderDeliveryDialog: false,
-        orderRefundDialog: false,
-        orderDetailDialog: false,
-        orderTemp: {},
-        deliverNameList: [],
-        refundAgree: 0
-      }
+        key: '',
+        pageNumber: 1,
+        pageSize: 10,
+        sort: '+id'
+      },
+      loading: false,
+      orderChangeDialog: false,
+      orderRemarkDialog: false,
+      orderDeliveryDialog: false,
+      orderRefundDialog: false,
+      orderDetailDialog: false,
+      orderTemp: {},
+      deliverNameList: [],
+      refundAgree: 0
+    }
+  },
+  mounted() {
+    this.getList()
+  },
+  created() {
+    this.getCompressList()
+  },
+  methods: {
+    async getCompressList() {
+      await new Promise((resolve, reject) => {
+        getDeliverNameList().then(response => {
+          this.deliverNameList = response.data.list
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    mounted() {
-      this.getList()
-    },
-    created() {
-      this.getCompressList()
-    },
-    methods: {
-      async getCompressList() {
-        await new Promise((resolve, reject) => {
-          getDeliverNameList().then(response => {
-            this.deliverNameList = response.data.list
+    async getList() {
+      this.loading = true
+      await new Promise((resolve, reject) => {
+        getSingleOrderList(this.listQuery)
+          .then(response => {
+            this.total = response.data.total
+            this.orderData = response.data.orderList
+            this.loading = false
           }).catch(error => {
             reject(error)
           })
+      })
+    },
+    handleChangeOrder(row) {
+      this.orderTemp = Object.assign({}, row) // copy obj
+      this.orderChangeDialog = true
+      // this.$nextTick(() => {
+      //   this.$refs['dataForm'].clearValidate()
+      // })
+    },
+    handleRemarkOrder(row) {
+      this.orderTemp = Object.assign({}, row)
+      this.orderRemarkDialog = true
+    },
+    handleRefundOrder(row) {
+      this.orderTemp = Object.assign({}, row)
+      this.orderRefundDialog = true
+    },
+    handleDeliverOrder(row) {
+      console.log(this.orderTemp)
+      this.orderTemp = Object.assign({}, row)
+      this.orderDeliveryDialog = true
+    },
+    handleDetailOrder(row) {
+      this.orderTemp = Object.assign({}, row)
+      this.orderDetailDialog = true
+    },
+    async deliveryOrder() {
+      await new Promise((resolve, reject) => {
+        deliverProduct({
+          orderIndividualId: this.orderTemp.id,
+          deliveryType: this.orderTemp.deliveryType,
+          deliveryId: this.orderTemp.deliveryId
         })
-      },
-      async getList() {
-        this.loading = true
-        await new Promise((resolve, reject) => {
-          getSingleOrderList(this.listQuery)
-            .then(response => {
-              this.total = response.data.total
-              this.orderData = response.data.orderList
-              this.loading = false
-            }).catch(error => {
+          .then(response => {
+            this.$message({
+              message: '发货成功',
+              type: 'success'
+            }
+            )
+            this.orderDeliveryDialog = false
+            this.getList()
+          }).catch(error => {
+            this.$message.error('发货失败 请重试')
             reject(error)
           })
-        })
-      },
-      handleChangeOrder(row) {
-        this.orderTemp = Object.assign({}, row) // copy obj
-        this.orderChangeDialog = true
-        // this.$nextTick(() => {
-        //   this.$refs['dataForm'].clearValidate()
-        // })
-      },
-      handleRemarkOrder(row) {
-        this.orderTemp = Object.assign({}, row)
-        this.orderRemarkDialog = true
-      },
-      handleRefundOrder(row) {
-        this.orderTemp = Object.assign({}, row)
-        this.orderRefundDialog = true
-      },
-      handleDeliverOrder(row) {
-        console.log(this.orderTemp)
-        this.orderTemp = Object.assign({}, row)
-        this.orderDeliveryDialog = true
-      },
-      handleDetailOrder(row) {
-        this.orderTemp = Object.assign({}, row)
-        this.orderDetailDialog = true
-      },
-      deliveryOrder() {
-        this.orderDeliveryDialog = false
-      },
-      updateOrder() {
-        this.orderChangeDialog = false
-        this.orderRemarkDialog = false
-      },
-      refundOrder() {
-        this.orderRefundDialog = false
-        this.refundAgree = 0
-      },
-      refreshOrder() {
-        this.getList()
-      },
-      searchOrder() {
-        this.getList()
-      },
-      millisecondsToTimeString(milliseconds) {
-        milliseconds += 8 * 3600000 // 增加 timestamp offset
-        const seconds = Math.floor(milliseconds / 1000)
-        let hours = String(Math.floor(seconds / 3600) - 14)
-        let minutes = String(Math.floor((seconds % 3600) / 60))
-        if (hours.length < 2) {
-          hours = '0' + hours
-        }
-        if (minutes.length < 2) {
-          minutes = '0' + minutes
-        }
-        return String(hours + ':' + minutes)
+      })
+    },
+    updateOrder() {
+      this.orderChangeDialog = false
+      this.orderRemarkDialog = false
+    },
+    refundOrder() {
+      this.orderRefundDialog = false
+      this.refundAgree = 0
+    },
+    refreshOrder() {
+      this.getList()
+    },
+    searchOrder() {
+      this.getList()
+    },
+    millisecondsToTimeString(milliseconds) {
+      milliseconds += 8 * 3600000 // 增加 timestamp offset
+      const seconds = Math.floor(milliseconds / 1000)
+      let hours = String(Math.floor(seconds / 3600) - 14)
+      let minutes = String(Math.floor((seconds % 3600) / 60))
+      if (hours.length < 2) {
+        hours = '0' + hours
       }
+      if (minutes.length < 2) {
+        minutes = '0' + minutes
+      }
+      return String(hours + ':' + minutes)
     }
   }
+}
 </script>
 
 <style scoped>

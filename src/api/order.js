@@ -22,3 +22,11 @@ export function getGroupOrderList(queryType) {
     data: queryType
   })
 }
+
+export function deliverProduct(deliverInfo) {
+  return request({
+    url: '/admin/order/deliver-product',
+    method: 'put',
+    data: deliverInfo
+  })
+}

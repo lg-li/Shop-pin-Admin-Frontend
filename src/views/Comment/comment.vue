@@ -91,6 +91,13 @@
           </el-card>
         </div>
       </div>
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="listQuery.pageNumber"
+        :limit.sync="listQuery.pageSize"
+        @pagination="getCommentByGoods"
+      />
     </el-card>
 
     <el-dialog top="4vh" title="评论详情" :visible.sync="detailDialog">
@@ -195,10 +202,10 @@
           }
         },
         listQuery: {
+          productId: 0,
           pageNumber: 1,
           pageSize: 10,
           sort: '+id',
-          Key: ''
         },
         detailDialog: false,
         commentDialog: false,
@@ -221,24 +228,6 @@
             reject(error)
           })
         })
-      },
-      setParent(parentId, row) {
-        this.childData = []
-        row.tempChildCategory = ''
-        row.tempChildCategoryId = ''
-        for (const val of this.categoryData) {
-          if (val.parent.id === parentId) {
-            this.childData = val.child
-            row.tempParentCategory = val.parent.text
-          }
-        }
-      },
-      setChild(childId, row) {
-        for (const val of this.childData) {
-          if (val.id === childId) {
-            row.tempChildCategory = val.text
-          }
-        }
       },
       confirmEdit(row) {
         if (row.tempChildCategory === '') {
@@ -284,9 +273,11 @@
         this.commentDialog = false
       },
       async getCommentByGoods(goods) {
+        this.total = goods.nums
+        this.listQuery.productId = goods.id
         this.commentListLoading = true
         await new Promise((resolve, reject) => {
-          getCommentByGoods(goods.id)
+          getCommentByGoods(goods.id, this.listQuery)
             .then(response => {
               this.commentData = response.data.goodsCommentList
               this.commentListLoading = false
