@@ -40,7 +40,7 @@
       <el-table-column label="商品种类" width="100px" type="expand">
         <template slot-scope="scope">
           <el-table
-            :data="scope.row.skuList"
+            :data="scope.row.productAttributeValues"
             border
             fit
             highlight-current-row
@@ -54,29 +54,29 @@
             <el-table-column width="180px" align="center" label="图片">
               <template slot-scope="item">
                 <el-image
-                  style="width: 100px; height: 100px"
+                  style="width: 80px; height: 80px"
                   :src="item.row.imageUrl"
                   :fit="contain"
                   lazy
                 />
               </template>
             </el-table-column>
-            <el-table-column align="center" label="SKU" width="65" fixed="left">
+            <el-table-column align="center" label="SKU" width="130" >
               <template slot-scope="item">
                 <span>{{ item.row.sku }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="库存" width="65" fixed="left">
+            <el-table-column align="center" label="库存" width="100" >
               <template slot-scope="item">
                 <span>{{ item.row.stock }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="价格" width="65" fixed="left">
+            <el-table-column align="center" label="价格" width="80" >
               <template slot-scope="item">
                 <span>{{ item.row.price }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="成本价" width="65" fixed="left">
+            <el-table-column align="center" label="成本价" width="80" >
               <template slot-scope="item">
                 <span>{{ item.row.cost }}</span>
               </template>
@@ -95,7 +95,7 @@
         <template slot-scope="scope">
           <el-image
             style="width: 100px; height: 100px"
-            :src="scope.row.imageUrl"
+            :src="scope.row.imageUrls"
             :fit="contain"
             lazy
           />
@@ -213,7 +213,7 @@
             inactive-text="不包邮">>
           </el-switch>
         </el-form-item>
-        <el-form-item v-if="newGoodsTemp.isFreeShipping==false" label="邮费" prop="pay_postage">
+        <el-form-item v-show="newGoodsTemp.isFreeShipping==false" label="邮费" prop="pay_postage">
           <el-input v-model="newGoodsTemp.shippingFee" />
         </el-form-item>
         <el-form-item label="购买获得积分" prop="pay_postage">
@@ -320,7 +320,7 @@
         <el-button @click="orderChangeDialog = false">
           取消
         </el-button>
-        <el-button v-if="addStep!=4" type="primary" @click="addStep++">下一步</el-button>
+        <el-button v-if="addStep!=4" type="primary" @click="nextStep()">下一步</el-button>
         <el-button v-if="addStep===4" type="primary" @click="updateOrder()">
           确认
         </el-button>
@@ -330,7 +330,7 @@
 </template>
 
 <script>
-import { getGoodsList } from '@/api/goods'
+import { getGoodsList,addProduct } from '@/api/goods'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 
@@ -370,7 +370,10 @@ export default {
         type: this.type,
         sort: '+id'
       },
-      newGoodsTemp:{},
+      newGoodsTemp:{
+        shippingFee : 0,
+        cost:100
+      },
       attributeList:[], //当前商品属性表
       skuList:[], //当前商品SKU表
       loading: false,
@@ -392,42 +395,45 @@ export default {
             this.total = response.data.total
             this.loading = false
           }).catch(error => {
-            reject(error)
-          })
+          reject(error)
+        })
       })
     },
-    handleAddGoods(){
-      this.newGoodsTemp = {}
+    handleAddGoods() {
+      this.newGoodsTemp = {
+        shippingFee : 0,
+          cost:100
+      },
       this.addStep = 0
       this.addGoodsDialog = true
     },
-    addNewAttribute(){
+    addNewAttribute() {
       this.attributeList.push({
-        attributeName:'',
-        attributeValue:'',
-        attributeChoice:'',
+        attributeName: '',
+        attributeValue: '',
+        attributeChoice: '',
       })
     },
     addNewSku() {
       this.skuList.push({
-        sku:'',
-        attributeList:this.attributeList,
-        stock:0,
-        price:0,
-        cost:0,
+        sku: '',
+        attributeList: this.attributeList,
+        stock: 0,
+        price: 0,
+        cost: 0,
       })
     },
     addNewAttributeValue(row) {
-      if (row.attributeValue.length===0) {
-        row.attributeValue = row.attributeValue+row.newAttributeValue
-      }else {
-      row.attributeValue = row.attributeValue+";"+row.newAttributeValue
+      if (row.attributeValue.length === 0) {
+        row.attributeValue = row.attributeValue + row.newAttributeValue
+      } else {
+        row.attributeValue = row.attributeValue + ";" + row.newAttributeValue
       }
       row.newAttributeValue = ''
     },
     deleteAttribute(row) {
-      for (let i = 0 ;i < this.attributeList.length;i++) {
-        if (this.attributeList[i].attributeName ===row.attributeName){
+      for (let i = 0; i < this.attributeList.length; i++) {
+        if (this.attributeList[i].attributeName === row.attributeName) {
           this.attributeList.splice(i, 1);
           break;
         }
@@ -435,10 +441,29 @@ export default {
     },
     generateSku(row) {
       console.log(row)
-      for (let i = 0; i <this.attributeList.length;i++) {
+      for (let i = 0; i < this.attributeList.length; i++) {
         row.sku = row.sku + this.attributeList[i].attributeChoice + ';'
       }
-      row.sku = row.sku.substring(0,row.sku.length-1)
+      row.sku = row.sku.substring(0, row.sku.length - 1)
+    },
+    nextStep() {
+      if (this.addStep === 0) {
+        this.addNewProduct()
+      }
+    },
+    async addNewProduct() {
+      await new Promise((resolve, reject) => {
+        addProduct(this.newGoodsTemp)
+          .then(response => {
+            this.$message({
+              message: '商品创建成功',
+              type: 'success'
+            })
+            this.addStep++
+          }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

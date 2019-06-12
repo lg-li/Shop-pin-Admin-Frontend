@@ -102,7 +102,8 @@
   import { mapGetters } from 'vuex'
   import myUpload from '@/components/ImageUpload/index'
   import {parseTime} from '@/utils/index'
-
+  import {updateStore} from '@/api/store'
+  import store from '@/store'
   export default {
     name: 'Store',
     components: {
@@ -130,7 +131,24 @@
     },
     methods: {
       changeStoreInfo() {
-        this.changeStoreDialog = false
+        if (this.dialogType === 1){
+          new Promise((resolve, reject) => {
+            updateStore(this.storeTemp).then(async response => {
+              resolve(response)
+              this.$message({
+                'message': '修改成功',
+                'type': 'success'
+              })
+              this.changeStoreDialog = false
+              await store.dispatch('store/getStoreList')
+            }).catch(error => {
+              reject(error)
+            })
+          }).then((resolve) => {
+
+          })
+        }
+
       },
       handleChangeStoreInfo(store, type) {
         if (type === 1) {

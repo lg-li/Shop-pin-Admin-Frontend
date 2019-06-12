@@ -55,6 +55,22 @@ export function uploadImage(base64) {
   return request({
     url: '/manager/store/upload',
     method: 'post',
-    data: {image:base64}
+    data: { image: base64 }
+  })
+}
+
+export function addStore(product) {
+  return request({
+    url: '/manager/store/storeInfo',
+    method: 'post',
+    data: product
+  })
+}
+
+export function updateStore(product) {
+  return request({
+    url: '/manager/store/storeInfo',
+    method: 'put',
+    data: product
   })
 }
