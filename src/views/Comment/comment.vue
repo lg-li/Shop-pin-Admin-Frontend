@@ -61,12 +61,12 @@
             <div slot="header" class="clearfix" style="vertical-align:middle">
               <el-image
                 class="user-icon"
-                :src="comment.user.avatalUrl"
+                :src="comment.avatal_url"
                 :fit="contain"
                 lazy
               />
               <el-col :span="16"/>
-              <span>{{ comment.user.nickname }}</span>
+              <span>{{ comment.nickname }}</span>
               <el-tag style="float: right;" :type="comment.grade===0?'success':comment.grade===1?'warning':'danger'">
                 <span>{{ comment.grade===0?'好评':comment.grade===1?'中评':'差评' }}</span>
               </el-tag>
@@ -104,13 +104,13 @@
       <el-form ref="dataForm" :model="commentTemp" label-position="left" label-width="100px" style="margin:16px">
         <el-form-item label="用户">
           <el-image
-            v-if="commentTemp.user.avatalUrl"
+            v-if="commentTemp.avatal_url"
             class="user-icon-detail"
-            :src="commentTemp.user.avatalUrl"
+            :src="commentTemp.avatal_url"
             :fit="contain"
             lazy
           />
-          <span>{{ commentTemp.user.nickname }}</span>
+          <span>{{ commentTemp.nickname }}</span>
         </el-form-item>
         <el-form-item label="购买商品">
           <span>美丽旗舰店的花蝴蝶</span>
@@ -125,7 +125,7 @@
         <el-form-item label="评论图片">
           <el-image
             class="commentImg"
-            :src="commentTemp.imagesUrls"
+            :src="commentTemp.images_urls"
             :fit="contain"
             lazy
           />
@@ -279,7 +279,7 @@
         await new Promise((resolve, reject) => {
           getCommentByGoods(goods.id, this.listQuery)
             .then(response => {
-              this.commentData = response.data.goodsCommentList
+              this.commentData = response.data.list
               this.commentListLoading = false
             }).catch(error => {
             reject(error)
