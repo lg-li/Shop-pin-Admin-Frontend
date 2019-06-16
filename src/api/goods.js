@@ -18,15 +18,6 @@ export function getGoodsWithComment(queryList) {
   })
 }
 
-export function addGoods(newGoods) {
-  return request({
-    url: '/goods/goods-with-comment',
-    methods: 'get',
-    params: {
-      queryList: queryList
-    }
-  })
-}
 
 export function getGoodsCategory(queryType, queryList) {
   return request({
@@ -40,6 +31,30 @@ export function getCategoryList() { // 获取所有的分类列表
   return request({
     url: '/goods/category-list',
     method: 'get'
+  })
+}
+
+export function addProduct (product) {
+  return request({
+    url :'/goods/create-product',
+    method:'post',
+    data:product
+  })
+}
+
+export function addSkuDefinition(sku) {
+  return request({
+    url :'/goods/create-sku-definition',
+    method:'post',
+    data:sku
+  })
+}
+
+export function addSkuValue(sku) {
+  return request({
+    url:'/goods/create-sku',
+    method:'post',
+    data:sku
   })
 }
 
