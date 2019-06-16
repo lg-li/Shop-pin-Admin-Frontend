@@ -145,7 +145,7 @@
         </el-table-column>
         >
 
-        <el-table-column min-width="100px" align="center" label="操作" close-on-click-modal="false">
+        <el-table-column min-width="100px" align="center" label="操作" :close-on-click-modal="false">
           <template slot-scope="scope">
             <el-button
               v-if="scope.row.paid===true&&scope.row.status===0"
@@ -182,8 +182,8 @@
       />
     </el-card>
 
-    <el-dialog top="4vh" title="修改订单" :visible.sync="orderChangeDialog" close-on-click-modal="false">
-      <div v-if="addStep===0">
+    <el-dialog top="4vh" title="修改订单" :visible.sync="orderChangeDialog" :close-on-click-modal="false">
+      <div>
         <el-form ref="dataForm" :model="orderTemp" label-position="left" label-width="100px" style="margin:16px;">
           <el-form-item label="订单编号" prop="id">
             <el-input v-model="orderTemp.id" :disabled="true" />
@@ -215,7 +215,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog top="4vh" title="发货" :visible.sync="orderDeliveryDialog" close-on-click-modal="false">
+    <el-dialog top="4vh" title="发货" :visible.sync="orderDeliveryDialog" :close-on-click-modal="false">
       <el-form ref="dataForm" :model="orderTemp" label-position="left" label-width="70px" style="margin:16px">
         <el-form-item label="发货类型" prop="delivery_type">
           <el-select v-model="orderTemp.deliveryType" placeholder="请选择发货类型">
@@ -276,7 +276,7 @@
           <span>{{ orderTemp.refundReasonExplain }}</span>
         </el-form-item>
         <el-form-item label="退款图片">
-          <el-image class="refund-img" :src="orderTemp.refundReasonImage" :fit="contain" lazy>
+          <el-image class="refund-img" :src="orderTemp.refundReasonImage" fit="contain" lazy>
             <div slot="placeholder" class="image-slot">
               加载中<span class="dot">...</span>
             </div>
@@ -383,6 +383,7 @@ export default {
   },
   data() {
     return {
+      total:0,
       orderData: [],
       listQuery: {
         orderTypeChoice: '0',
@@ -448,7 +449,6 @@ export default {
       this.orderRefundDialog = true
     },
     handleDeliverOrder(row) {
-      console.log(this.orderTemp)
       this.orderTemp = Object.assign({}, row)
       this.orderDeliveryDialog = true
     },

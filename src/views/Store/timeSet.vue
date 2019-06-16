@@ -1,5 +1,5 @@
 <template>
-  <div class="home-container">
+  <div class="time-container">
     <el-alert
       title="可自由设置任意个每日收团的时间点 系统会自动匹配最近的时间点作为拼团截止时间"
       type="warning"
@@ -164,7 +164,7 @@ export default {
 </script>
 
 <style scoped>
-  .home-container {
+  .time-container {
     /*background-color: #f0f2f5;*/
     padding: 0px 30px;
     min-height: calc(100vh - 84px);

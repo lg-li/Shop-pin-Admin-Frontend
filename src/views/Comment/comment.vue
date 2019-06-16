@@ -30,7 +30,7 @@
           >
 
             <el-col :span="12">
-              <el-image class="good-img" :src="good.imageUrls" :fit="contain" lazy>
+              <el-image class="good-img" :src="good.imageUrls" fit="contain" lazy>
                 <div slot="placeholder" class="image-slot">
                   加载中<span class="dot">...</span>
                 </div>
@@ -63,7 +63,7 @@
               <el-image
                 class="user-icon"
                 :src="comment.avatal_url"
-                :fit="contain"
+                fit="contain"
                 lazy
               />
               <el-col :span="16" />
@@ -112,7 +112,7 @@
             v-if="commentTemp.avatal_url"
             class="user-icon-detail"
             :src="commentTemp.avatal_url"
-            :fit="contain"
+            fit="contain"
             lazy
           />
           <span>{{ commentTemp.nickname }}</span>
@@ -135,7 +135,7 @@
           <el-image
             class="commentImg"
             :src="commentTemp.imagesUrls"
-            :fit="contain"
+            fit="contain"
             lazy
           />
         </el-form-item>

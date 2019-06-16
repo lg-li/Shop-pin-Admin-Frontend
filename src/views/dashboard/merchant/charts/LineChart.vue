@@ -30,7 +30,9 @@ export default {
     chartData: {
       type: Object,
       required: true,
-      default: {}
+      default: function () {
+        return {}
+      }
     }
   },
   data() {

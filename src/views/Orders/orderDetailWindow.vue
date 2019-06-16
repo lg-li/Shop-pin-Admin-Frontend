@@ -34,7 +34,7 @@
           <el-col :span="24" style="margin-bottom: 4px">
             <el-card class="good-card">
               <el-col :span="5">
-                <el-image :src="good.product.imageUrls" :fit="contain" lazy>
+                <el-image :src="good.product.imageUrls" fit="contain" lazy>
                   <div slot="placeholder" class="image-slot">
                     加载中<span class="dot">...</span>
                   </div>
@@ -98,10 +98,6 @@ export default {
   props: {
     order: {
       type: Object,
-      required: true
-    },
-    test: {
-      type: Number,
       required: true
     }
   }

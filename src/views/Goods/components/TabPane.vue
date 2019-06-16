@@ -56,7 +56,7 @@
                 <el-image
                   style="width: 80px; height: 80px"
                   :src="item.row.imageUrl"
-                  :fit="contain"
+                  fit="contain"
                   lazy
                 />
               </template>
@@ -96,7 +96,7 @@
           <el-image
             style="width: 100px; height: 100px"
             :src="scope.row.imageUrls"
-            :fit="contain"
+            fit="contain"
             lazy
           />
         </template>
@@ -156,7 +156,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column min-width="200px" show-overflow-tooltip="true" align="center" label="商品描述">
+      <el-table-column min-width="200px" :show-overflow-tooltip="true" align="center" label="商品描述">
         <template slot-scope="scope">
           <span>{{ scope.row.description }}</span>
         </template>
@@ -183,7 +183,7 @@
       @pagination="getList"
     />
 
-    <el-dialog top="4vh" title="新增商品" :visible.sync="addGoodsDialog" close-on-click-modal="false">
+    <el-dialog top="4vh" title="新增商品" :visible.sync="addGoodsDialog" :close-on-click-modal="false">
       <el-steps :active="addStep" finish-status="success">
         <el-step title="确定基本信息" />
         <el-step title="确定属性" />
@@ -399,7 +399,7 @@ export default {
         getGoodsList(this.type, this.listQuery)
           .then(response => {
             this.goodsData = response.data.goodsList
-            this.total = response.data.total
+            this.total = this.goodsData.length
             this.loading = false
           }).catch(error => {
             reject(error)

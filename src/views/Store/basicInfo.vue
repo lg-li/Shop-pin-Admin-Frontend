@@ -1,5 +1,5 @@
 <template>
-  <div class="home-container">
+  <div class="store-container">
     <el-row :gutter="20">
       <el-col :xs="24" :sm="18" :lg="18">
         <div>
@@ -15,7 +15,7 @@
             <el-image
               :src="current_store.logoUrl"
               style="width: 30%; height: 30%"
-              :fit="scale-down"
+              fit="contain"
             />
           </div>
 
@@ -82,7 +82,7 @@
             v-if="storeTemp.logoUrl"
             :src="storeTemp.logoUrl"
             style="width: 40%; height: 40%"
-            :fit="scale-down"
+            fit="contain"
           />
         </el-form-item>
       </el-form>
@@ -184,7 +184,7 @@ export default {
 </script>
 
 <style scoped>
-  .home-container {
+  .store-container {
     /*background-color: #f0f2f5;*/
     padding: 30px;
     min-height: calc(100vh - 84px);

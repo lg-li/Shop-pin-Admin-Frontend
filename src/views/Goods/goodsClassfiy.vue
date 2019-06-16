@@ -36,7 +36,7 @@
             <el-image
               style="width: 100px; height: 100px"
               :src="scope.row.imageUrls"
-              :fit="scale-down"
+              fit="scale-down"
               lazy
             />
           </template>
@@ -163,7 +163,6 @@ export default {
       await new Promise((resolve, reject) => {
         getGoodsCategory(this.listQuery)
           .then(response => {
-            this.total = response.data.total
             const items = response.data.list
             this.goodsData = items.map(v => {
               this.$set(v, 'edit', false)
@@ -173,6 +172,7 @@ export default {
               v.tempChildCategoryId = v.childCategoryId
               return v
             })
+            this.total = this.goodsData.length
             this.loading = false
           }).catch(error => {
             reject(error)
