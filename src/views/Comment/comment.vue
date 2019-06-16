@@ -241,24 +241,7 @@ export default {
           })
       })
     },
-    confirmEdit(row) {
-      if (row.tempChildCategory === '') {
-        this.$message({
-          message: `商品 ${row.name} 的子级分类未选择`,
-          type: 'warning'
-        })
-        return
-      }
-      row.edit = false
-      row.parentCategory = row.tempParentCategory
-      row.parentCategoryId = row.tempParentCategoryId
-      row.childCategory = row.tempChildCategory
-      row.childCategoryId = row.tempChildCategoryId
-      this.$message({
-        message: `商品 ${row.name} 的分类修改成功`,
-        type: 'success'
-      })
-    },
+
     handleEdit(row) {
       row.edit = !row.edit
       for (const val of this.categoryData) {
@@ -295,7 +278,7 @@ export default {
               }
             )
             this.commentDialog = false
-            this.getList()
+            this.getCommentByGoods(this.commentTemp.id)
           }).catch(error => {
           this.$message.error('评论失败 请重试')
           reject(error)

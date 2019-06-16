@@ -24,9 +24,9 @@
       ])
     },
     created() {
-      if (this.roles.includes('merchant')) {
+      if (this.roles.includes('ROLE_MERCHANT')) {
         this.currentRole = 'merchantDashboard'
-      } else if (this.roles.includes('admin')) {
+      } else if (this.roles.includes('ROLE_ADMIN')) {
         this.currentRole = 'adminDashboard'
       }
     }

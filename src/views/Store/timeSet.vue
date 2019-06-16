@@ -127,7 +127,7 @@ export default {
         type: 'warning'
       }).then(async() => {
         await new Promise((resolve, reject) => {
-          deleteTimePoint({ closeBatch: this.multiTimeSet
+          deleteTimePoint({ closeBatchList: this.multiTimeSet
           }).then(response => {
             this.$message({
               message: '删除成功',
@@ -143,7 +143,7 @@ export default {
     millisecondsToTimeString(milliseconds) {
       milliseconds += 8 * 3600000 // 增加 timestamp offset
       const seconds = Math.floor(milliseconds / 1000)
-      let hours = String(Math.floor(seconds / 3600) - 14)
+      let hours = String(Math.floor(seconds / 3600))
       let minutes = String(Math.floor((seconds % 3600) / 60))
       if (hours.length < 2) {
         hours = '0' + hours
@@ -155,7 +155,7 @@ export default {
     },
     timeStringToMilliseconds(timeString) {
       const hoursAndMinutes = timeString.split(':')
-      const hours = Number(hoursAndMinutes[0]) + 14
+      const hours = Number(hoursAndMinutes[0])
       const minutes = Number(hoursAndMinutes[1])
       return (1000 * (minutes * 60 + hours * 3600)) - 8 * 3600000 // 减少 timestamp offset
     }

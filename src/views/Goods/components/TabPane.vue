@@ -184,6 +184,11 @@
     />
 
     <el-dialog top="4vh" title="新增商品" :visible.sync="addGoodsDialog" close-on-click-modal="false">
+      <el-steps  :active="addStep" finish-status="success">
+        <el-step title="确定基本信息"></el-step>
+        <el-step title="确定属性"></el-step>
+        <el-step title="确定SKU"></el-step>
+      </el-steps>
       <div v-if="addStep===0">
       <el-form ref="dataForm" :model="newGoodsTemp" label-position="left" label-width="100px" style="margin:16px;">
         <el-form-item label="商品名称" prop="id">
@@ -323,10 +328,8 @@
         <el-button @click="orderChangeDialog = false">
           取消
         </el-button>
-        <el-button v-if="addStep!=4" type="primary" @click="nextStep()">下一步</el-button>
-        <el-button v-if="addStep===4" type="primary" @click="updateOrder()">
-          确认
-        </el-button>
+        <el-button  type="primary" @click="nextStep()">{{addStep!==2?'下一步':'确定'}}</el-button>
+
       </div>
     </el-dialog>
   </div>
@@ -404,6 +407,7 @@ export default {
     },
     handleAddGoods() {
       this.newGoodsTemp = {
+        isFreeShipping:true,
         shippingFee : 0,
           cost:100
       },
@@ -456,6 +460,9 @@ export default {
       if (this.addStep ===1) {
         this.addNewAttributeList()
       }
+      if (this.addStep ===2) {
+        this.addNewSkuList()
+      }
     },
     async addNewProduct() {
       await new Promise((resolve, reject) => {
@@ -480,10 +487,28 @@ export default {
         })
           .then(response => {
             this.$message({
-              message: '商品创建成功',
+              message: '商品属性创建成功',
               type: 'success'
             })
             this.addStep++
+          }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    async addNewSkuList() {
+      await new Promise((resolve, reject) => {
+        addSkuValue({
+          productId : this.newGoodsTemp.id,
+          list:this.skuList
+        })
+          .then(response => {
+            this.$message({
+              message: '商品SKU创建成功',
+              type: 'success'
+            })
+            this.addGoodsDialog = false
           }).catch(error => {
           reject(error)
         })

@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       title: 'Pin后台',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      logo: 'https://i.loli.net/2019/06/13/5d01b9029a22b15331.png'
     }
   }
 }
