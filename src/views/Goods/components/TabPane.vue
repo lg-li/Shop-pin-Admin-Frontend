@@ -61,22 +61,22 @@
                 />
               </template>
             </el-table-column>
-            <el-table-column align="center" label="SKU" width="130" >
+            <el-table-column align="center" label="SKU" width="130">
               <template slot-scope="item">
                 <span>{{ item.row.sku }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="库存" width="100" >
+            <el-table-column align="center" label="库存" width="100">
               <template slot-scope="item">
                 <span>{{ item.row.stock }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="价格" width="80" >
+            <el-table-column align="center" label="价格" width="80">
               <template slot-scope="item">
                 <span>{{ item.row.price }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="成本价" width="80" >
+            <el-table-column align="center" label="成本价" width="80">
               <template slot-scope="item">
                 <span>{{ item.row.cost }}</span>
               </template>
@@ -184,50 +184,51 @@
     />
 
     <el-dialog top="4vh" title="新增商品" :visible.sync="addGoodsDialog" close-on-click-modal="false">
-      <el-steps  :active="addStep" finish-status="success">
-        <el-step title="确定基本信息"></el-step>
-        <el-step title="确定属性"></el-step>
-        <el-step title="确定SKU"></el-step>
+      <el-steps :active="addStep" finish-status="success">
+        <el-step title="确定基本信息" />
+        <el-step title="确定属性" />
+        <el-step title="确定SKU" />
       </el-steps>
       <div v-if="addStep===0">
-      <el-form ref="dataForm" :model="newGoodsTemp" label-position="left" label-width="100px" style="margin:16px;">
-        <el-form-item label="商品名称" prop="id">
-          <el-input v-model="newGoodsTemp.name"  />
-        </el-form-item>
-        <el-form-item label="商品简介" prop="total_price">
-          <el-input v-model="newGoodsTemp.info" />
-        </el-form-item>
-        <el-form-item label="搜索关键字" prop="postage">
-          <el-input v-model="newGoodsTemp.keyword" />
-        </el-form-item>
-        <el-form-item label="描述" prop="total_price">
-          <el-input v-model="newGoodsTemp.description" />
-        </el-form-item>
-        <el-form-item label="显示价格" prop="pay_price">
-          <el-input v-model="newGoodsTemp.price" />
-        </el-form-item>
-        <el-form-item label="折扣前金额" prop="pay_price">
-          <el-input v-model="newGoodsTemp.priceBeforeDiscount" />
-        </el-form-item>
-        <el-form-item label="单位名" prop="pay_postage">
-          <el-input v-model="newGoodsTemp.unitName" />
-        </el-form-item>
-        <el-form-item label="是否包邮" prop="gained_credit">
-          <el-switch
-            v-model="newGoodsTemp.isFreeShipping"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-text="包邮"
-            inactive-text="不包邮">>
-          </el-switch>
-        </el-form-item>
-        <el-form-item v-show="newGoodsTemp.isFreeShipping==false" label="邮费" prop="pay_postage">
-          <el-input v-model="newGoodsTemp.shippingFee" />
-        </el-form-item>
-        <el-form-item label="购买获得积分" prop="pay_postage">
-          <el-input v-model="newGoodsTemp.creditToGive" />
-        </el-form-item>
-      </el-form>
+        <el-form ref="dataForm" :model="newGoodsTemp" label-position="left" label-width="100px" style="margin:16px;">
+          <el-form-item label="商品名称" prop="id">
+            <el-input v-model="newGoodsTemp.name" />
+          </el-form-item>
+          <el-form-item label="商品简介" prop="total_price">
+            <el-input v-model="newGoodsTemp.info" />
+          </el-form-item>
+          <el-form-item label="搜索关键字" prop="postage">
+            <el-input v-model="newGoodsTemp.keyword" />
+          </el-form-item>
+          <el-form-item label="描述" prop="total_price">
+            <el-input v-model="newGoodsTemp.description" />
+          </el-form-item>
+          <el-form-item label="显示价格" prop="pay_price">
+            <el-input v-model="newGoodsTemp.price" />
+          </el-form-item>
+          <el-form-item label="折扣前金额" prop="pay_price">
+            <el-input v-model="newGoodsTemp.priceBeforeDiscount" />
+          </el-form-item>
+          <el-form-item label="单位名" prop="pay_postage">
+            <el-input v-model="newGoodsTemp.unitName" />
+          </el-form-item>
+          <el-form-item label="是否包邮" prop="gained_credit">
+            <el-switch
+              v-model="newGoodsTemp.isFreeShipping"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-text="包邮"
+              inactive-text="不包邮"
+            >>
+            </el-switch>
+          </el-form-item>
+          <el-form-item v-show="newGoodsTemp.isFreeShipping==false" label="邮费" prop="pay_postage">
+            <el-input v-model="newGoodsTemp.shippingFee" />
+          </el-form-item>
+          <el-form-item label="购买获得积分" prop="pay_postage">
+            <el-input v-model="newGoodsTemp.creditToGive" />
+          </el-form-item>
+        </el-form>
       </div>
 
       <div v-if="addStep===1">
@@ -240,20 +241,20 @@
         >
           <el-table-column align="center" label="属性名" width="80" fixed="left">
             <template slot-scope="item">
-              <el-input v-model="item.row.attributeName"></el-input>
+              <el-input v-model="item.row.attributeName" />
             </template>
           </el-table-column>
 
           <el-table-column align="center" label="属性值" width="150" fixed="left">
             <template slot-scope="item">
-              <el-tag type="info" v-for="attribute in item.row.attributeValue.split(';')">
-                {{ attribute}}
+              <el-tag v-for="attribute in item.row.attributeValue.split(';')" type="info">
+                {{ attribute }}
               </el-tag>
             </template>
           </el-table-column>
           <el-table-column align="center" label="新属性值" width="180" fixed="left">
             <template slot-scope="item">
-              <el-input style="width: 70px" v-model="item.row.newAttributeValue"></el-input>
+              <el-input v-model="item.row.newAttributeValue" style="width: 70px" />
               <el-button @click="addNewAttributeValue(item.row)">添加</el-button>
             </template>
           </el-table-column>
@@ -280,8 +281,8 @@
                   v-for="item in attribute.attributeValue.split(';')"
                   :key="item"
                   :label="item"
-                  :value="item">
-                </el-option>
+                  :value="item"
+                />
               </el-select>
             </template>
           </el-table-column>
@@ -294,25 +295,25 @@
 
           <el-table-column align="center" label="SKU" width="100">
             <template slot-scope="item">
-             <span>{{item.row.sku}}</span>
+              <span>{{ item.row.sku }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="库存" width="80" >
+          <el-table-column align="center" label="库存" width="80">
             <template slot-scope="item">
-              <el-input v-model="item.row.stock"></el-input>
+              <el-input v-model="item.row.stock" />
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="价格" width="80" >
+          <el-table-column align="center" label="价格" width="80">
             <template slot-scope="item">
-              <el-input v-model="item.row.price"></el-input>
+              <el-input v-model="item.row.price" />
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="成本" width="80" >
+          <el-table-column align="center" label="成本" width="80">
             <template slot-scope="item">
-              <el-input v-model="item.row.cost"></el-input>
+              <el-input v-model="item.row.cost" />
             </template>
           </el-table-column>
 
@@ -328,7 +329,7 @@
         <el-button @click="orderChangeDialog = false">
           取消
         </el-button>
-        <el-button  type="primary" @click="nextStep()">{{addStep!==2?'下一步':'确定'}}</el-button>
+        <el-button type="primary" @click="nextStep()">{{ addStep!==2?'下一步':'确定' }}</el-button>
 
       </div>
     </el-dialog>
@@ -336,7 +337,7 @@
 </template>
 
 <script>
-import { getGoodsList,addProduct,addSkuDefinition,addSkuValue } from '@/api/goods'
+import { getGoodsList, addProduct, addSkuDefinition, addSkuValue } from '@/api/goods'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 
@@ -376,16 +377,16 @@ export default {
         type: this.type,
         sort: '+id'
       },
-      newGoodsTemp:{
-        shippingFee : 0,
-        cost:100
+      newGoodsTemp: {
+        shippingFee: 0,
+        cost: 100
       },
-      attributeList:[], //当前商品属性表
-      skuList:[], //当前商品SKU表
+      attributeList: [], // 当前商品属性表
+      skuList: [], // 当前商品SKU表
       loading: false,
       addGoodsDialog: false,
       addStep: 0,
-      newAttributeValue:'',
+      newAttributeValue: ''
     }
   },
   mounted() {
@@ -401,15 +402,15 @@ export default {
             this.total = response.data.total
             this.loading = false
           }).catch(error => {
-          reject(error)
-        })
+            reject(error)
+          })
       })
     },
     handleAddGoods() {
       this.newGoodsTemp = {
-        isFreeShipping:true,
-        shippingFee : 0,
-          cost:100
+        isFreeShipping: true,
+        shippingFee: 0,
+        cost: 100
       },
       this.addStep = 0
       this.addGoodsDialog = true
@@ -418,7 +419,7 @@ export default {
       this.attributeList.push({
         attributeName: '',
         attributeValue: '',
-        attributeChoice: '',
+        attributeChoice: ''
       })
     },
     addNewSku() {
@@ -427,22 +428,22 @@ export default {
         attributeList: this.attributeList,
         stock: 0,
         price: 0,
-        cost: 0,
+        cost: 0
       })
     },
     addNewAttributeValue(row) {
       if (row.attributeValue.length === 0) {
         row.attributeValue = row.attributeValue + row.newAttributeValue
       } else {
-        row.attributeValue = row.attributeValue + ";" + row.newAttributeValue
+        row.attributeValue = row.attributeValue + ';' + row.newAttributeValue
       }
       row.newAttributeValue = ''
     },
     deleteAttribute(row) {
       for (let i = 0; i < this.attributeList.length; i++) {
         if (this.attributeList[i].attributeName === row.attributeName) {
-          this.attributeList.splice(i, 1);
-          break;
+          this.attributeList.splice(i, 1)
+          break
         }
       }
     },
@@ -457,10 +458,10 @@ export default {
       if (this.addStep === 0) {
         this.addNewProduct()
       }
-      if (this.addStep ===1) {
+      if (this.addStep === 1) {
         this.addNewAttributeList()
       }
-      if (this.addStep ===2) {
+      if (this.addStep === 2) {
         this.addNewSkuList()
       }
     },
@@ -475,15 +476,15 @@ export default {
             })
             this.addStep++
           }).catch(error => {
-          reject(error)
-        })
+            reject(error)
+          })
       })
     },
     async addNewAttributeList() {
       await new Promise((resolve, reject) => {
         addSkuDefinition({
-          productId : this.newGoodsTemp.id,
-          attribute:this.attributeList
+          productId: this.newGoodsTemp.id,
+          attribute: this.attributeList
         })
           .then(response => {
             this.$message({
@@ -492,16 +493,16 @@ export default {
             })
             this.addStep++
           }).catch(error => {
-          reject(error)
-        })
+            reject(error)
+          })
       })
     },
 
     async addNewSkuList() {
       await new Promise((resolve, reject) => {
         addSkuValue({
-          productId : this.newGoodsTemp.id,
-          list:this.skuList
+          productId: this.newGoodsTemp.id,
+          list: this.skuList
         })
           .then(response => {
             this.$message({
@@ -510,8 +511,8 @@ export default {
             })
             this.addGoodsDialog = false
           }).catch(error => {
-          reject(error)
-        })
+            reject(error)
+          })
       })
     }
 

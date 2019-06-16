@@ -64,13 +64,13 @@
 
         <el-table-column min-width="100px" align="center" label="创建时间">
           <template slot-scope="scope">
-            <span>{{ scope.row.createTime | parseTime}}</span>
+            <span>{{ scope.row.createTime | parseTime }}</span>
           </template>
         </el-table-column>
 
         <el-table-column min-width="100px" align="center" label="拼成时间">
           <template slot-scope="scope">
-            <span v-if="scope.row.actualFinishTime">{{ scope.row.actualFinishTime | parseTime}}</span>
+            <span v-if="scope.row.actualFinishTime">{{ scope.row.actualFinishTime | parseTime }}</span>
           </template>
         </el-table-column>
 
@@ -108,7 +108,7 @@
                 <el-form-item label="支付状态">
                   <el-tag :type="order.paid | payStatusFilter">
                     <span v-if="order.paid===0">未支付</span>
-                    <span v-else>{{ order.payType | payTypeFilter}}</span>
+                    <span v-else>{{ order.payType | payTypeFilter }}</span>
                   </el-tag>
                   <el-tag v-if="order.refundStatus===1" style="margin-top:4px" type="danger">
                     申请退款
@@ -131,19 +131,19 @@
           </template>
         </el-table-column>
 
-<!--        <el-table-column min-width="110px" align="center" label="操作">-->
-<!--          <template slot-scope="scope">-->
-<!--            <el-button-->
-<!--              v-if="scope.row.status===0"-->
-<!--              type="primary"-->
-<!--              plain-->
-<!--              size="mini"-->
-<!--              @click="handleChangeFinishTime(scope.row)"-->
-<!--            >-->
-<!--              修改截止时间-->
-<!--            </el-button>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
+        <!--        <el-table-column min-width="110px" align="center" label="操作">-->
+        <!--          <template slot-scope="scope">-->
+        <!--            <el-button-->
+        <!--              v-if="scope.row.status===0"-->
+        <!--              type="primary"-->
+        <!--              plain-->
+        <!--              size="mini"-->
+        <!--              @click="handleChangeFinishTime(scope.row)"-->
+        <!--            >-->
+        <!--              修改截止时间-->
+        <!--            </el-button>-->
+        <!--          </template>-->
+        <!--        </el-table-column>-->
 
       </el-table>
       <pagination
@@ -156,131 +156,131 @@
     </el-card>
 
     <el-dialog top="2vh" title="订单详情" :visible.sync="orderDetailDialog">
-      <order-detail-window :order="orderTemp"/>
+      <order-detail-window :order="orderTemp" />
     </el-dialog>
 
   </div>
 </template>
 
 <script>
-  import { getGroupOrderList } from '@/api/order'
-  import orderDetailWindow from './orderDetailWindow'
-  import Pagination from '@/components/Pagination'
-  import {parseTime} from '@/utils/index'
+import { getGroupOrderList } from '@/api/order'
+import orderDetailWindow from './orderDetailWindow'
+import Pagination from '@/components/Pagination'
+import { parseTime } from '@/utils/index'
 
-  export default {
-    name: 'GroupOrderManage',
-    components: {
-      orderDetailWindow,
-      Pagination
-    },
-    filters: {
-      parseTime,
-      orderStatusFilter(status) {
-        const statusMap = {
-          0: 'danger',
-          1: 'warning',
-          2: 'info',
-          3: 'success',
-          4: 'danger',
-          5: 'success',
-          6: 'success'
-        }
-        return statusMap[status]
-      },
-      orderWordFilter(word) {
-        const statusMap = {
-          0: '待发货',
-          1: '待收货',
-          2: '待评价',
-          3: '已评价',
-          4: '已退款',
-          5: '退款拒绝'
-        }
-        return statusMap[word]
-      },
-      payStatusFilter(status) {
-        const statusMap = {
-          false: 'danger',
-          true: 'success'
-        }
-        return statusMap[status]
-      },
-      payTypeFilter(status) {
-        const statusMap = {
-          'WECHAT': '微信支付',
-          'BALANCE': '余额支付'
-        }
-        return statusMap[status]
+export default {
+  name: 'GroupOrderManage',
+  components: {
+    orderDetailWindow,
+    Pagination
+  },
+  filters: {
+    parseTime,
+    orderStatusFilter(status) {
+      const statusMap = {
+        0: 'danger',
+        1: 'warning',
+        2: 'info',
+        3: 'success',
+        4: 'danger',
+        5: 'success',
+        6: 'success'
       }
+      return statusMap[status]
     },
-    data() {
-      return {
-        total: 0,
-        orderData: [],
-        listQuery: {
-          groupStatus: 0,
-          createTime: 0,
-          pageNumber: 1,
-          pageSize: 10,
-          sort: '+id'
-        },
-        loading: false,
-        orderChangeDialog: false,
-        orderDetailDialog: false,
-        orderTemp: {},
-        pickerOptions: {
-          shortcuts: [{
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', [start, end])
-            }
-          }, {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-              picker.$emit('pick', [start, end])
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-              picker.$emit('pick', [start, end])
-            }
-          }]
-        }
+    orderWordFilter(word) {
+      const statusMap = {
+        0: '待发货',
+        1: '待收货',
+        2: '待评价',
+        3: '已评价',
+        4: '已退款',
+        5: '退款拒绝'
       }
+      return statusMap[word]
     },
-    mounted() {
-      this.getList()
+    payStatusFilter(status) {
+      const statusMap = {
+        false: 'danger',
+        true: 'success'
+      }
+      return statusMap[status]
     },
-    methods: {
-      async getList() {
-        this.loading = true
-        await new Promise((resolve, reject) => {
-          getGroupOrderList(this.listQuery)
-            .then(response => {
-              this.total = response.data.total
-              this.orderData = response.data.orderList
-              this.loading = false
-            }).catch(error => {
-            reject(error)
-          })
-        })
+    payTypeFilter(status) {
+      const statusMap = {
+        'WECHAT': '微信支付',
+        'BALANCE': '余额支付'
+      }
+      return statusMap[status]
+    }
+  },
+  data() {
+    return {
+      total: 0,
+      orderData: [],
+      listQuery: {
+        groupStatus: 0,
+        createTime: 0,
+        pageNumber: 1,
+        pageSize: 10,
+        sort: '+id'
       },
-      handleDetailOrder(order) {
-        this.orderTemp = Object.assign({}, order)
-        this.orderDetailDialog = true
+      loading: false,
+      orderChangeDialog: false,
+      orderDetailDialog: false,
+      orderTemp: {},
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
       }
     }
+  },
+  mounted() {
+    this.getList()
+  },
+  methods: {
+    async getList() {
+      this.loading = true
+      await new Promise((resolve, reject) => {
+        getGroupOrderList(this.listQuery)
+          .then(response => {
+            this.total = response.data.total
+            this.orderData = response.data.orderList
+            this.loading = false
+          }).catch(error => {
+            reject(error)
+          })
+      })
+    },
+    handleDetailOrder(order) {
+      this.orderTemp = Object.assign({}, order)
+      this.orderDetailDialog = true
+    }
   }
+}
 </script>
 
 <style scoped>

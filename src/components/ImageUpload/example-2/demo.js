@@ -5,6 +5,9 @@ const Vue = window.Vue;
 
 new Vue({
 	el: '#app',
+	components: {
+		'my-upload': myUpload
+	},
 	data: {
 		show1: false,
 		show2: false,
@@ -19,9 +22,6 @@ new Vue({
 		headers: {
 			smail: '*_~'
 		}
-	},
-	components: {
-		'my-upload': myUpload
 	},
 	methods: {
 		toggleShow1() {

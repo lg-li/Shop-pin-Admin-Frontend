@@ -2,30 +2,32 @@
 
 
 
-**谁住在深海的大菠萝里**
+**Pin 拼团系统的管理端后台**
 
+包含以下模块
 
-
-## Build Setup
-
+## 运行项目
+打开控制台，切换至项目根目录
 
 ```bash
-# install dependency
+# 安装依赖
 npm install
 
-# develop
+# 运行
 npm run dev
 ```
 
-This will automatically open http://localhost:9528
+项目将会自动在 http://localhost:9528 打开
 
-## Build
+## 构建项目
 
 ```bash
-# build for test environment
+# 测试环境下构建
+将会保留javaScript文件中的变量名，方便调试
 npm run build:stage
 
-# build for production environment
+# 生产环境下构建
+压缩JavaScript文件，减小生成体积
 npm run build:prod
 ```
 
@@ -49,6 +51,6 @@ npm run lint -- --fix
 
 ## License
 
-[MIT](https://github.com/PanJiaChen/vue-admin-template/blob/master/LICENSE) license.
+[MIT] license.
 
-Copyright (c) 2017-present Niu Cheng
+Copyright (c) 2019-present Niu Cheng

@@ -7,9 +7,9 @@
     <div class="right-menu">
 
       <template>
-        <search id="header-search" class="right-menu-item"/>
-        <screenfull id="screenfull" class="right-menu-item hover-effect"/>
-        <storechange class="right-menu-item"/>
+        <search id="header-search" class="right-menu-item" />
+        <screenfull id="screenfull" class="right-menu-item hover-effect" />
+        <storechange class="right-menu-item" />
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
@@ -51,10 +51,10 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar',
+      'avatar'
     ])
   },
-  created(){
+  created() {
   },
   methods: {
     toggleSideBar() {
@@ -63,7 +63,7 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-    },
+    }
   }
 }
 </script>

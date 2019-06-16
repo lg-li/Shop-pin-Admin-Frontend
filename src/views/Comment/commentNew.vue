@@ -3,7 +3,7 @@
     <el-card style="margin-bottom: 8px">
       <div class="filter-item">
         <div class="filter-input">
-          <el-input v-model="listQuery.Key" style="width: 250px" placeholder="商品名称 编号"/>
+          <el-input v-model="listQuery.Key" style="width: 250px" placeholder="商品名称 编号" />
         </div>
         <el-button style="margin-left:8px" @click="searchGoods">搜索</el-button>
         <el-button @click="refreshGoods">刷新</el-button>
@@ -40,7 +40,8 @@
                 <span class="good-text-info">{{ good.name }}</span>
               </div>
               <div style="margin-bottom: 20px"><span
-                style="font-size: 30px;font-weight: 500">{{ good.commentNum }}</span>
+                                                 style="font-size: 30px;font-weight: 500"
+                                               >{{ good.commentNum }}</span>
                 <span>条评论</span>
               </div>
             </el-col>
@@ -59,8 +60,10 @@
           <el-card class="good-card">
             <div slot="header" class="clearfix">
               <span>{{ comment.createTime }}</span>
-              <el-tag style="float: right; padding: 0 3px"
-                      :type="comment.grade===0?'success':comment.grade===1?'warning':'danger'">
+              <el-tag
+                style="float: right; padding: 0 3px"
+                :type="comment.grade===0?'success':comment.grade===1?'warning':'danger'"
+              >
                 <span>{{ comment.grade===0?'好评':comment.grade===1?'中评':'差评' }}</span>
               </el-tag>
             </div>
@@ -71,7 +74,7 @@
                 </div>
               </el-image>
             </el-col>
-            <el-col :span="16"/>
+            <el-col :span="16" />
           </el-card>
         </div>
       </div>
@@ -80,128 +83,128 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import { getGoodsWithComment } from '@/api/goods'
-  import { getCommentByGoods } from '@/api/comment'
-  import Pagination from '@/components/Pagination'
-  import { formatTime } from '../../utils'
+import { mapGetters } from 'vuex'
+import { getGoodsWithComment } from '@/api/goods'
+import { getCommentByGoods } from '@/api/comment'
+import Pagination from '@/components/Pagination'
+import { formatTime } from '../../utils'
 
-  export default {
-    components: {
-      Pagination
-    },
-    computed: {
-      ...mapGetters([
-        'current_store'
-      ])
-    },
+export default {
+  components: {
+    Pagination
+  },
+  computed: {
+    ...mapGetters([
+      'current_store'
+    ])
+  },
 
-    data() {
-      return {
-        total: 0,
-        goodsData: [],
-        commentData: [],
-        listQuery: {
-          pageNumber: 1,
-          pageSize: 10,
-          sort: '+id',
-          Key: ''
-        },
-        goodsListLoading: false,
-        commentListLoading: false
-      }
-    },
-    mounted() {
-      this.getList()
-    },
-    methods: {
-      async getList() {
-        this.goodsListLoading = true
-        await new Promise((resolve, reject) => {
-          getGoodsWithComment(this.listQuery)
-            .then(response => {
-              this.goodsData = response.data.goodsList
-              this.goodsListLoading = false
-            }).catch(error => {
+  data() {
+    return {
+      total: 0,
+      goodsData: [],
+      commentData: [],
+      listQuery: {
+        pageNumber: 1,
+        pageSize: 10,
+        sort: '+id',
+        Key: ''
+      },
+      goodsListLoading: false,
+      commentListLoading: false
+    }
+  },
+  mounted() {
+    this.getList()
+  },
+  methods: {
+    async getList() {
+      this.goodsListLoading = true
+      await new Promise((resolve, reject) => {
+        getGoodsWithComment(this.listQuery)
+          .then(response => {
+            this.goodsData = response.data.goodsList
+            this.goodsListLoading = false
+          }).catch(error => {
             reject(error)
           })
-        })
-      },
-      setParent(parentId, row) {
-        this.childData = []
-        row.tempChildCategory = ''
-        row.tempChildCategoryId = ''
-        for (const val of this.categoryData) {
-          if (val.parent.id === parentId) {
-            this.childData = val.child
-            row.tempParentCategory = val.parent.text
-          }
+      })
+    },
+    setParent(parentId, row) {
+      this.childData = []
+      row.tempChildCategory = ''
+      row.tempChildCategoryId = ''
+      for (const val of this.categoryData) {
+        if (val.parent.id === parentId) {
+          this.childData = val.child
+          row.tempParentCategory = val.parent.text
         }
-      },
-      setChild(childId, row) {
-        for (const val of this.childData) {
-          if (val.id === childId) {
-            row.tempChildCategory = val.text
-          }
+      }
+    },
+    setChild(childId, row) {
+      for (const val of this.childData) {
+        if (val.id === childId) {
+          row.tempChildCategory = val.text
         }
-      },
-      confirmEdit(row) {
-        if (row.tempChildCategory === '') {
-          this.$message({
-            message: `商品 ${row.name} 的子级分类未选择`,
-            type: 'warning'
-          })
-          return
-        }
-        row.edit = false
-        row.parentCategory = row.tempParentCategory
-        row.parentCategoryId = row.tempParentCategoryId
-        row.childCategory = row.tempChildCategory
-        row.childCategoryId = row.tempChildCategoryId
+      }
+    },
+    confirmEdit(row) {
+      if (row.tempChildCategory === '') {
         this.$message({
-          message: `商品 ${row.name} 的分类修改成功`,
-          type: 'success'
-        })
-      },
-      cancelEdit(row) {
-        row.tempParentCategory = row.parentCategory
-        row.tempParentCategoryId = row.parentCategoryId
-        row.tempChildCategory = row.childCategory
-        row.tempChildCategoryId = row.childCategoryId
-        row.edit = false
-        this.$message({
-          message: `商品 ${row.name} 的分类修改已撤回`,
+          message: `商品 ${row.name} 的子级分类未选择`,
           type: 'warning'
         })
-      },
-      handleEdit(row) {
-        row.edit = !row.edit
-        for (const val of this.categoryData) {
-          if (val.parent.id === row.parentCategoryId) {
-            this.childData = val.child
-          }
+        return
+      }
+      row.edit = false
+      row.parentCategory = row.tempParentCategory
+      row.parentCategoryId = row.tempParentCategoryId
+      row.childCategory = row.tempChildCategory
+      row.childCategoryId = row.tempChildCategoryId
+      this.$message({
+        message: `商品 ${row.name} 的分类修改成功`,
+        type: 'success'
+      })
+    },
+    cancelEdit(row) {
+      row.tempParentCategory = row.parentCategory
+      row.tempParentCategoryId = row.parentCategoryId
+      row.tempChildCategory = row.childCategory
+      row.tempChildCategoryId = row.childCategoryId
+      row.edit = false
+      this.$message({
+        message: `商品 ${row.name} 的分类修改已撤回`,
+        type: 'warning'
+      })
+    },
+    handleEdit(row) {
+      row.edit = !row.edit
+      for (const val of this.categoryData) {
+        if (val.parent.id === row.parentCategoryId) {
+          this.childData = val.child
         }
-      },
-      searchGoods() {
-        this.getList()
-      },
-      refreshGoods() {
-        this.getList()
-      },
-      async getCommentByGoods(goods) {
-        this.commentListLoading = true
-        await new Promise((resolve, reject) => {
-          getCommentByGoods(goods.id)
-            .then(response => {
-              this.commentData = response.data.goodsCommentList
-              this.commentListLoading = false
-            }).catch(error => {
+      }
+    },
+    searchGoods() {
+      this.getList()
+    },
+    refreshGoods() {
+      this.getList()
+    },
+    async getCommentByGoods(goods) {
+      this.commentListLoading = true
+      await new Promise((resolve, reject) => {
+        getCommentByGoods(goods.id)
+          .then(response => {
+            this.commentData = response.data.goodsCommentList
+            this.commentListLoading = false
+          }).catch(error => {
             reject(error)
           })
-        })
-      }
+      })
     }
   }
+}
 </script>
 
 <style>

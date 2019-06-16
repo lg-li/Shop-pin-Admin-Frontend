@@ -6,7 +6,7 @@
           管理员界面
         </h1>
         <h2>管理员界面尚未完工</h2>
-        <h6></h6>
+        <h6 />
         <ul class="list-unstyled">
           <li>你可以:</li>
           <li class="link-type">
@@ -30,27 +30,27 @@
 </template>
 
 <script>
-  import errGif from '@/assets/401_images/401.gif'
+import errGif from '@/assets/401_images/401.gif'
 
-  export default {
-    name: 'Page401',
-    data() {
-      return {
-        errGif: errGif + '?' + +new Date(),
-        ewizardClap: 'https://wpimg.wallstcn.com/007ef517-bafd-4066-aae4-6883632d9646',
-        dialogVisible: false
-      }
-    },
-    methods: {
-      back() {
-        if (this.$route.query.noGoBack) {
-          this.$router.push({ path: '/dashboard' })
-        } else {
-          this.$router.go(-1)
-        }
+export default {
+  name: 'Page401',
+  data() {
+    return {
+      errGif: errGif + '?' + +new Date(),
+      ewizardClap: 'https://wpimg.wallstcn.com/007ef517-bafd-4066-aae4-6883632d9646',
+      dialogVisible: false
+    }
+  },
+  methods: {
+    back() {
+      if (this.$route.query.noGoBack) {
+        this.$router.push({ path: '/dashboard' })
+      } else {
+        this.$router.go(-1)
       }
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

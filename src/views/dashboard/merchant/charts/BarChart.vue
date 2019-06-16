@@ -102,7 +102,7 @@ export default {
       })
     },
     setDate() {
-      for (let i = 6;i >= 0;i--) {
+      for (let i = 6; i >= 0; i--) {
         this.date.push(this.getDay(i))
       }
     },

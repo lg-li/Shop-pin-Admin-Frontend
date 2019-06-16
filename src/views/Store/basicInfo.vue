@@ -51,17 +51,17 @@
     >
       <el-form ref="dataForm" :model="storeTemp" label-position="left" label-width="70px" style="margin:16px;">
         <el-form-item label="店铺名称">
-          <el-input v-model="storeTemp.name"/>
+          <el-input v-model="storeTemp.name" />
         </el-form-item>
 
         <el-form-item label="店铺简介" prop="description">
-          <el-input v-model="storeTemp.description"/>
+          <el-input v-model="storeTemp.description" />
         </el-form-item>
         <el-form-item label="店铺电话" prop="phone">
-          <el-input v-model="storeTemp.phone"/>
+          <el-input v-model="storeTemp.phone" />
         </el-form-item>
         <el-form-item label="店铺邮箱" prop="email">
-          <el-input v-model="storeTemp.email"/>
+          <el-input v-model="storeTemp.email" />
         </el-form-item>
         <el-form-item label="店铺LOGO" prop="url">
           <el-button style="margin-bottom: 8px" @click="toggleShow">设置图片</el-button>
@@ -99,89 +99,88 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import myUpload from '@/components/ImageUpload/index'
-  import {parseTime} from '@/utils/index'
-  import {updateStore} from '@/api/store'
-  import store from '@/store'
-  export default {
-    name: 'Store',
-    components: {
-      'my-upload': myUpload
-    },
-    filters:{
-      parseTime
-    },
-    computed: {
-      ...mapGetters([
-        'current_store'
-      ])
-    },
-    data() {
-      return {
-        storeTemp: {},
-        changeStoreDialog: false,
-        dialogType: 1,
-        show: false,
-        imgDataUrl: '', // the datebase64 url of created image
-        uploadParams: {
-          smfile: 'StoreLogoUrl'
-        }
+import { mapGetters } from 'vuex'
+import myUpload from '@/components/ImageUpload/index'
+import { parseTime } from '@/utils/index'
+import { updateStore } from '@/api/store'
+import store from '@/store'
+export default {
+  name: 'Store',
+  components: {
+    'my-upload': myUpload
+  },
+  filters: {
+    parseTime
+  },
+  computed: {
+    ...mapGetters([
+      'current_store'
+    ])
+  },
+  data() {
+    return {
+      storeTemp: {},
+      changeStoreDialog: false,
+      dialogType: 1,
+      show: false,
+      imgDataUrl: '', // the datebase64 url of created image
+      uploadParams: {
+        smfile: 'StoreLogoUrl'
       }
-    },
-    methods: {
-      changeStoreInfo() {
-        if (this.dialogType === 1){
-          new Promise((resolve, reject) => {
-            updateStore(this.storeTemp).then(async response => {
-              resolve(response)
-              this.$message({
-                'message': '修改成功',
-                'type': 'success'
-              })
-              this.changeStoreDialog = false
-              await store.dispatch('store/getStoreList')
-            }).catch(error => {
-              reject(error)
-            })
-          }).then((resolve) => {
-
-          })
-        }
-
-      },
-      handleChangeStoreInfo(store, type) {
-        if (type === 1) {
-          this.storeTemp = Object.assign({}, store)
-          this.dialogType = 1
-        } else {
-          this.storeTemp = {}
-          this.storeTemp.createTime = new Date()
-          this.dialogType = 2
-        }
-        this.changeStoreDialog = true
-      },
-      toggleShow() {
-        this.show = !this.show
-      },
-      cropSuccess(imgDataUrl, field) {
-        console.log(field + '选取成功！' + imgDataUrl)
-        this.imgDataUrl = imgDataUrl
-      },
-      cropUploadSuccess(jsonData, field) {
-        // console.log('-------- upload success --------')
-        console.log(jsonData)
-        // console.log('field: ' + field)
-        this.storeTemp.imageDataUrl = jsonData.data.url
-      },
-      cropUploadFail(status, field) {
-        console.log('-------- upload fail --------')
-        console.log(status)
-        console.log('field: ' + field)
-      }
-
     }
+  },
+  methods: {
+    changeStoreInfo() {
+      if (this.dialogType === 1) {
+        new Promise((resolve, reject) => {
+          updateStore(this.storeTemp).then(async response => {
+            resolve(response)
+            this.$message({
+              'message': '修改成功',
+              'type': 'success'
+            })
+            this.changeStoreDialog = false
+            await store.dispatch('store/getStoreList')
+          }).catch(error => {
+            reject(error)
+          })
+        }).then((resolve) => {
+
+        })
+      }
+    },
+    handleChangeStoreInfo(store, type) {
+      if (type === 1) {
+        this.storeTemp = Object.assign({}, store)
+        this.dialogType = 1
+      } else {
+        this.storeTemp = {}
+        this.storeTemp.createTime = new Date()
+        this.dialogType = 2
+      }
+      this.changeStoreDialog = true
+    },
+    toggleShow() {
+      this.show = !this.show
+    },
+    cropSuccess(imgDataUrl, field) {
+      console.log(field + '选取成功！' + imgDataUrl)
+      this.imgDataUrl = imgDataUrl
+    },
+    cropUploadSuccess(jsonData, field) {
+      // console.log('-------- upload success --------')
+      console.log(jsonData)
+      // console.log('field: ' + field)
+      this.storeTemp.imageDataUrl = jsonData.data.url
+    },
+    cropUploadFail(status, field) {
+      console.log('-------- upload fail --------')
+      console.log(status)
+      console.log('field: ' + field)
+    }
+
   }
+}
 </script>
 
 <style scoped>

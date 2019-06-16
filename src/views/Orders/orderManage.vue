@@ -184,26 +184,26 @@
 
     <el-dialog top="4vh" title="修改订单" :visible.sync="orderChangeDialog" close-on-click-modal="false">
       <div v-if="addStep===0">
-      <el-form ref="dataForm" :model="orderTemp" label-position="left" label-width="100px" style="margin:16px;">
-        <el-form-item label="订单编号" prop="id">
-          <el-input v-model="orderTemp.id" :disabled="true" />
-        </el-form-item>
-        <el-form-item label="商品总价" prop="total_price">
-          <el-input v-model="orderTemp.totalPrice" />
-        </el-form-item>
-        <el-form-item label="原始运费" prop="postage">
-          <el-input v-model="orderTemp.postage" />
-        </el-form-item>
-        <el-form-item label="实际支付金额" prop="pay_price">
-          <el-input v-model="orderTemp.payPrice" />
-        </el-form-item>
-        <el-form-item label="实际支付运费" prop="pay_postage">
-          <el-input v-model="orderTemp.payPostage" />
-        </el-form-item>
-        <el-form-item label="赠送积分" prop="gained_credit">
-          <el-input v-model="orderTemp.gainedCredit" />
-        </el-form-item>
-      </el-form>
+        <el-form ref="dataForm" :model="orderTemp" label-position="left" label-width="100px" style="margin:16px;">
+          <el-form-item label="订单编号" prop="id">
+            <el-input v-model="orderTemp.id" :disabled="true" />
+          </el-form-item>
+          <el-form-item label="商品总价" prop="total_price">
+            <el-input v-model="orderTemp.totalPrice" />
+          </el-form-item>
+          <el-form-item label="原始运费" prop="postage">
+            <el-input v-model="orderTemp.postage" />
+          </el-form-item>
+          <el-form-item label="实际支付金额" prop="pay_price">
+            <el-input v-model="orderTemp.payPrice" />
+          </el-form-item>
+          <el-form-item label="实际支付运费" prop="pay_postage">
+            <el-input v-model="orderTemp.payPostage" />
+          </el-form-item>
+          <el-form-item label="赠送积分" prop="gained_credit">
+            <el-input v-model="orderTemp.gainedCredit" />
+          </el-form-item>
+        </el-form>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="orderChangeDialog = false">

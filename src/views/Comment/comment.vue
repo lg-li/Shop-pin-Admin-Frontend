@@ -120,7 +120,7 @@
         <el-form-item label="购买商品">
           <span>{{ commentTemp.name }}</span>
 
-          <el-tag type="info" style="margin-right: 4px" v-if="commentTemp.sku" v-for="a in commentTemp.sku.split(';')">  {{ a }}</el-tag>
+          <el-tag v-for="a in commentTemp.sku.split(';')" v-if="commentTemp.sku" type="info" style="margin-right: 4px">  {{ a }}</el-tag>
         </el-form-item>
         <el-form-item label="评论">
           <span>{{ commentTemp.content }}</span>
@@ -147,7 +147,7 @@
             <span> {{ commentTemp.merchantCommentContent }}</span>
           </el-form-item>
           <el-form-item label="商家回复时间" prop="merchantCommentTime">
-            <span> {{ commentTemp.merchantCommentTime | parseTime}}</span>
+            <span> {{ commentTemp.merchantCommentTime | parseTime }}</span>
           </el-form-item>
         </div>
       </el-form>
@@ -188,7 +188,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getGoodsWithComment } from '@/api/goods'
-import { getCommentByGoods,replyComment} from '@/api/comment'
+import { getCommentByGoods, replyComment } from '@/api/comment'
 import Pagination from '@/components/Pagination'
 import { parseTime } from '../../utils'
 
@@ -211,7 +211,7 @@ export default {
       goodsData: [],
       commentData: [],
       commentTemp: {
-        sku:''
+        sku: ''
       },
       listQuery: {
         productId: 0,
@@ -269,20 +269,20 @@ export default {
       await new Promise((resolve, reject) => {
         replyComment({
           commentId: this.commentTemp.id,
-          commentContent: this.commentTemp.merchantCommentContent,
+          commentContent: this.commentTemp.merchantCommentContent
         })
           .then(response => {
             this.$message({
-                message: '评论成功',
-                type: 'success'
-              }
+              message: '评论成功',
+              type: 'success'
+            }
             )
             this.commentDialog = false
             this.getCommentByGoods(this.commentTemp.id)
           }).catch(error => {
-          this.$message.error('评论失败 请重试')
-          reject(error)
-        })
+            this.$message.error('评论失败 请重试')
+            reject(error)
+          })
       })
     },
     async getCommentByGoods(goods) {

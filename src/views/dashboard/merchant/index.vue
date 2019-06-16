@@ -61,7 +61,7 @@
 
       <el-col :xs="24" :sm="12" :lg="12" class="card-line">
         <el-card>
-          <bar-chart :chart-data="storeData.chartData"/>
+          <bar-chart :chart-data="storeData.chartData" />
         </el-card>
       </el-col>
 
@@ -83,63 +83,63 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import BarChart from './charts/BarChart'
-  import LineChart from './charts/LineChart'
-  import store from '@/store'
-  import { getStoreInfo } from '@/api/store'
+import { mapGetters } from 'vuex'
+import BarChart from './charts/BarChart'
+import LineChart from './charts/LineChart'
+import store from '@/store'
+import { getStoreInfo } from '@/api/store'
 
-  export default {
-    name: 'Dashboard',
-    components: {
-      BarChart,
-      LineChart
-    },
-    data() {
-      return {
-        storeData: {},
-        temp: {},
-        switchDialog: false,
-        targetStore: 0
+export default {
+  name: 'Dashboard',
+  components: {
+    BarChart,
+    LineChart
+  },
+  data() {
+    return {
+      storeData: {},
+      temp: {},
+      switchDialog: false,
+      targetStore: 0
 
-      }
-    },
-    computed: {
-      ...mapGetters([
-        'store_list',
-        'current_store'
-      ])
-    },
-    mounted() {
-      this.getStoreData()
-    },
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'store_list',
+      'current_store'
+    ])
+  },
+  mounted() {
+    this.getStoreData()
+  },
 
-    methods: {
-      switchStore() {
-        store.dispatch('store/changeCurrentStore', this.targetStore)
-        this.switchDialog = false
-        this.getStoreNum()
-      },
-      getStoreNum() {
-        return new Promise((resolve, reject) => {
-          getStoreInfo()
-            .then(response => {
-              this.storeData = response.data
-            }).catch(error => {
+  methods: {
+    switchStore() {
+      store.dispatch('store/changeCurrentStore', this.targetStore)
+      this.switchDialog = false
+      this.getStoreNum()
+    },
+    getStoreNum() {
+      return new Promise((resolve, reject) => {
+        getStoreInfo()
+          .then(response => {
+            this.storeData = response.data
+          }).catch(error => {
             reject(error)
           })
-        })
-      },
+      })
+    },
 
-      async getStoreData() {
-        try {
-          await store.dispatch('store/getStoreList')
-          await this.getStoreNum()
-        } catch {
-      }
+    async getStoreData() {
+      try {
+        await store.dispatch('store/getStoreList')
+        await this.getStoreNum()
+      } catch {
       }
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

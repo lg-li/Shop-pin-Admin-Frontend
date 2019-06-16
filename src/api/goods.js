@@ -43,10 +43,3 @@ export function getCategoryList() { // 获取所有的分类列表
   })
 }
 
-export function getCategoryList() { // 获取所有的分类列表
-  return request({
-    url: '/goods/category-list',
-    method: 'get'
-  })
-}
-

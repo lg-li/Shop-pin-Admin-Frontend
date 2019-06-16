@@ -9,7 +9,7 @@ const state = {
   currentStore: {}, // 获取商店Token
   logo_url: '',
   store_list: [],
-  currentIndex:0,
+  currentIndex: 0
 }
 
 const mutations = {
@@ -19,7 +19,7 @@ const mutations = {
   SET_STORENAME: (state, name) => {
     state.name = name
   },
-  SET_CURRENTINDEX:(state,index)=> {
+  SET_CURRENTINDEX: (state, index) => {
     state.currentIndex = index
   },
   SET_DESCRIPTION: (state, description) => {
@@ -49,13 +49,13 @@ const actions = {
         if (data.storeList && data.storeList.length > 0) {
           if (state.id === 2) {
             commit('SET_CURRENTSTORE', data.storeList[0])
-            commit('SET_CURRENTINDEX',0)
+            commit('SET_CURRENTINDEX', 0)
             setStoreToken(state.currentStore.id)
             commit('SET_ID', state.currentStore.id)
             commit('SET_STORENAME', state.currentStore.name)
             commit('SET_LOGO_URL', state.currentStore.logo_url)
             commit('SET_DESCRIPTION', state.currentStore.description)
-          }else {
+          } else {
             commit('SET_CURRENTSTORE', data.storeList[state.currentIndex])
             setStoreToken(state.currentStore.id)
             commit('SET_ID', state.currentStore.id)
@@ -73,7 +73,7 @@ const actions = {
 
   changeCurrentStore({ commit }, index) {
     commit('SET_CURRENTSTORE', state.store_list[index])
-    commit('SET_CURRENTINDEX',index)
+    commit('SET_CURRENTINDEX', index)
     setStoreToken(state.currentStore.id)
     commit('SET_ID', state.currentStore.id)
     commit('SET_STORENAME', state.currentStore.name)

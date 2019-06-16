@@ -93,19 +93,19 @@
 </template>
 
 <script>
-  export default {
-    name: 'OrderDetailWindow',
-    props: {
-      order: {
-        type: Object,
-        required: true
-      },
-      test: {
-        type: Number,
-        required: true
-      }
+export default {
+  name: 'OrderDetailWindow',
+  props: {
+    order: {
+      type: Object,
+      required: true
+    },
+    test: {
+      type: Number,
+      required: true
     }
   }
+}
 </script>
 
 <style scoped>

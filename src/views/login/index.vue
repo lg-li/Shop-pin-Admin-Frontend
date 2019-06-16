@@ -114,16 +114,16 @@ export default {
     handleLogin() {
       // this.$refs.loginForm.validate(valid => {
       //   if (valid) {
-          this.loading = true
-          // 在这里处理登录的账号密码验证等逻辑
-          this.$store.dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/' })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
+      this.loading = true
+      // 在这里处理登录的账号密码验证等逻辑
+      this.$store.dispatch('user/login', this.loginForm)
+        .then(() => {
+          this.$router.push({ path: this.redirect || '/' })
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
       //   } else {
       //     console.log('请检查输入后重试登录')
       //     return false
