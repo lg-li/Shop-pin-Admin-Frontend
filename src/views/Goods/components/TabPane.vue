@@ -374,7 +374,7 @@ export default {
         pageNumber: 1,
         pageSize: 10,
         key: '',
-        type: this.type,
+        queryType: this.type,
         sort: '+id'
       },
       newGoodsTemp: {
