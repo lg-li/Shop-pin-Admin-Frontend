@@ -8,7 +8,7 @@
     <el-col :span="16">
 
       <el-table
-        v-loading="timePointLoading"
+        v-loading="repayArgLoading"
         :data="timePointList"
         stripe
         style="width: 80%"
@@ -66,7 +66,7 @@ export default {
   data() {
     return {
       timePointList: [],
-      timePointLoading: false,
+      repayArgLoading: false,
       multiTimeSet: [],
       addingNewTime: false,
       newTime: '',
@@ -80,10 +80,10 @@ export default {
   },
   methods: {
     async getList() {
-      this.timePointLoading = true
+      this.repayArgLoading = true
       await new Promise((resolve, reject) => {
         getTimePoint().then(response => {
-          this.timePointLoading = false
+          this.repayArgLoading = false
           this.timePointList = response.data.list
           for (let i = 0; i <= this.timePointList.length; i++) {
             this.timePointList[i].number = i + 1

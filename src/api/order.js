@@ -38,3 +38,15 @@ export function addOrderRemark(remarkInfo) {
     data: remarkInfo
   })
 }
+
+export function refund(id, agree, reason) {
+  return request({
+    url: '/admin/refund-order',
+    method: 'post',
+    data: {
+      orderIndividualId: id,
+      agree: agree,
+      refundRefuseReason: reason
+    }
+  })
+}

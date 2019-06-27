@@ -70,7 +70,7 @@ export const asyncRoutes = [
     redirect: '/example/table',
     name: 'Store',
     alwaysShow: true,
-    meta: { title: '店铺', icon: 'example', roles: ['ROLE_MERCHANT'] },
+    meta: { title: '店铺', icon: 'component', roles: ['ROLE_MERCHANT'] },
     children: [
       {
         path: 'manage',
@@ -107,13 +107,13 @@ export const asyncRoutes = [
     redirect: '/orders/manage',
     name: 'Orders',
     alwaysShow: true,
-    meta: { title: '订单', icon: 'example', roles: ['ROLE_MERCHANT'] },
+    meta: { title: '订单', icon: 'excel', roles: ['ROLE_MERCHANT'] },
     children: [
       {
         path: 'singleManage',
         name: 'orderManage',
         component: () => import('@/views/Orders/orderManage'),
-        meta: { title: '订单管理', icon: 'table', roles: ['ROLE_MERCHANT'] }
+        meta: { title: '订单管理', icon: 'documentation', roles: ['ROLE_MERCHANT'] }
       }, {
         path: 'groupManage',
         name: 'orderManage',

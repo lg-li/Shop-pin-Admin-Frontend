@@ -283,20 +283,20 @@
           </el-image>
         </el-form-item>
         <el-form-item label="申请时间">
-          <span>{{ orderTemp.refundApplyTime }}</span>
+          <span>{{ orderTemp.refundApplyTime | parseTime}}</span>
         </el-form-item>
         <el-form-item label="操作">
-          <el-button type="primary" @click="refundAgree=1">
+          <el-button type="primary" @click="refundAgree= true">
             同意退款
           </el-button>
-          <el-button type="primary" @click="refundAgree=2">
+          <el-button type="primary" @click="refundAgree= false">
             拒绝退款
           </el-button>
         </el-form-item>
-        <el-form-item v-if="refundAgree!==0" :label="refundAgree===1?'退款金额':'拒绝理由'">
-          <el-input v-if="refundAgree===1" v-model="orderTemp.refundPrice" placeholder="退款金额" />
+        <el-form-item v-if="refundAgree!==0" :label="refundAgree===true?'退款金额':'拒绝理由'">
+          <el-input v-if="refundAgree===true" disabled="true" v-model="orderTemp.refundPrice" placeholder="退款金额" />
           <el-input
-            v-if="refundAgree===2"
+            v-if="refundAgree===false"
             v-model="orderTemp.refundRefuseReason"
             :rows="3"
             type="textarea"
@@ -329,6 +329,7 @@ import { mapGetters } from 'vuex'
 import { parseTime } from '@/utils/index'
 import orderDetailWindow from './orderDetailWindow'
 import Pagination from '@/components/Pagination'
+import { refund } from '../../api/order'
 
 export default {
   name: 'OrderManage',
@@ -483,8 +484,14 @@ export default {
       this.orderRemarkDialog = false
     },
     refundOrder() {
-      this.orderRefundDialog = false
-      this.refundAgree = 0
+      refund(this.orderTemp.id,this.refundAgree,this.orderTemp.refundRefuseReason).then((doc)=>{
+        this.orderRefundDialog = false
+        this.refundAgree = 0
+        this.getList()
+      }).catch((error)=>{
+        this.$message.error("传输失败")
+      })
+
     },
     refreshOrder() {
       this.getList()

@@ -102,6 +102,26 @@
         </template>
       </el-table-column>
 
+      <el-table-column width="100px" align="center" label="操作">
+        <template slot-scope="scope">
+          <el-dropdown trigger="click">
+            <el-button type="primary" plain size="mini">
+              操作<i class="el-icon-arrow-down el-icon--right" />
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item v-if="type!=='READY'"@click.native="handleOnShown(scope.row,1)">下架
+              </el-dropdown-item>
+              <el-dropdown-item v-else @click.native="handleOnShown(scope.row,0)">上架
+              </el-dropdown-item>
+              <el-dropdown-item @click.native="handleChangeGoods(scope.row)">修改商品</el-dropdown-item>
+              <el-dropdown-item @click.native="handleEditSKU(scope.row)">修改SKU</el-dropdown-item>
+              <el-dropdown-item @click.native="handleEditRichText(scope.row)">编辑商品富文本</el-dropdown-item>
+              <el-dropdown-item divided>商品详情</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </template>
+      </el-table-column>
+
       <el-table-column min-width="200px" align="center" label="商品简介">
         <template slot-scope="scope">
           <span>{{ scope.row.info }}</span>
@@ -183,7 +203,7 @@
       @pagination="getList"
     />
 
-    <el-dialog top="4vh" title="新增商品" :visible.sync="addGoodsDialog" :close-on-click-modal="false">
+    <el-dialog top="4vh" width="80%" title="新增商品" :visible.sync="addGoodsDialog" :close-on-click-modal="false">
       <el-steps :active="addStep" finish-status="success">
         <el-step title="确定基本信息" />
         <el-step title="确定属性" />
@@ -239,26 +259,26 @@
           fit
           style="width: 100%"
         >
-          <el-table-column align="center" label="属性名" width="80" fixed="left">
+          <el-table-column align="center" label="属性名" min-width="80" fixed="left">
             <template slot-scope="item">
               <el-input v-model="item.row.attributeName" />
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="属性值" width="150" fixed="left">
+          <el-table-column align="center" label="属性值" min-width="150" fixed="left">
             <template slot-scope="item">
-              <el-tag v-for="attribute in item.row.attributeValue.split(';')" type="info">
+              <el-tag style="margin-right:4px" v-for="attribute in item.row.attributeValue.split(';')" type="info">
                 {{ attribute }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="新属性值" width="180" fixed="left">
+          <el-table-column align="center" label="新属性值" min-width="180" fixed="left">
             <template slot-scope="item">
-              <el-input v-model="item.row.newAttributeValue" style="width: 70px" />
+              <el-input v-model="item.row.newAttributeValue" style="min-width: 100px ;max-width: 200px" />
               <el-button @click="addNewAttributeValue(item.row)">添加</el-button>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="删除" width="100" fixed="left">
+          <el-table-column align="center" label="删除" min-width="100" fixed="left">
             <template slot-scope="item">
               <el-button @click="deleteAttribute(item.row)">删除</el-button>
             </template>
@@ -267,7 +287,7 @@
       </div>
 
       <div v-if="addStep===2">
-        <el-button @click="addNewSku">添加新SKU</el-button>
+        <el-button style="margin-bottom: 8px" @click="addNewSku">添加新SKU</el-button>
         <el-table
           :data="skuList"
           border
@@ -287,31 +307,31 @@
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="生成SKU" width="80">
+          <el-table-column align="center" label="生成SKU" min-width="80">
             <template slot-scope="item">
               <el-button @click="generateSku(item.row)">生成SKU</el-button>
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="SKU" width="100">
+          <el-table-column align="center" label="SKU" min-width="100">
             <template slot-scope="item">
               <span>{{ item.row.sku }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="库存" width="80">
+          <el-table-column align="center" label="库存" min-width="80">
             <template slot-scope="item">
               <el-input v-model="item.row.stock" />
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="价格" width="80">
+          <el-table-column align="center" label="价格" min-width="80">
             <template slot-scope="item">
               <el-input v-model="item.row.price" />
             </template>
           </el-table-column>
 
-          <el-table-column align="center" label="成本" width="80">
+          <el-table-column align="center" label="成本" min-width="80">
             <template slot-scope="item">
               <el-input v-model="item.row.cost" />
             </template>
@@ -326,10 +346,21 @@
       </div>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="orderChangeDialog = false">
+        <el-button @click="addGoodsDialog = false">
           取消
         </el-button>
         <el-button type="primary" @click="nextStep()">{{ addStep!==2?'下一步':'确定' }}</el-button>
+
+      </div>
+    </el-dialog>
+    <el-dialog top="4vh" width="90%" title="编辑商品富文本" :visible.sync="richDialog" :close-on-click-modal="false">
+      <tinymce v-model="richGoods.richText" :height="400" />
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addGoodsDialog = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="editRichText">确定</el-button>
 
       </div>
     </el-dialog>
@@ -340,10 +371,12 @@
 import { getGoodsList, addProduct, addSkuDefinition, addSkuValue } from '@/api/goods'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
+import { upRichText, upSale } from '../../../api/goods'
+import Tinymce from '@/components/Tinymce'
 
 export default {
   components: {
-    Pagination
+    Pagination,Tinymce
   },
   filters: {
     statusFilter(status) {
@@ -363,7 +396,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'CN'
+      default: 'SALING'
     }
   },
   data() {
@@ -385,8 +418,13 @@ export default {
       skuList: [], // 当前商品SKU表
       loading: false,
       addGoodsDialog: false,
+      richDialog:false,
       addStep: 0,
-      newAttributeValue: ''
+      newAttributeValue: '',
+      richGoods:{
+        richText:'',
+        id:''
+      },
     }
   },
   mounted() {
@@ -513,6 +551,37 @@ export default {
           }).catch(error => {
             reject(error)
           })
+      })
+    },
+    handleOnShown(row,type) {
+      this.$confirm('确定将'+row.name+(type===0?'上架':'下架')+'吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        upSale(row.id,type).then(()=>{
+          this.$message({
+            type: 'success',
+            message: '操作成功'
+          })
+          this.getList()
+        })
+      }).catch(() => {
+      })
+    },
+    handleChangeGoods(row) {
+
+    },
+    handleEditSKU(row){
+
+    },
+    handleEditRichText(row) {
+      this.richDialog = true
+      this.richGoods.id = row.id
+    },
+    editRichText() {
+      upRichText(this.richGoods).then(()=>{
+        this.richDialog = false
       })
     }
 

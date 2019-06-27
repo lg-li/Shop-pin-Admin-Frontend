@@ -11,6 +11,11 @@
           <time-set v-if="activeName==='time'" />
         </keep-alive>
       </el-tab-pane>
+      <el-tab-pane key="repay" label="返利设置" name="repay">
+        <keep-alive>
+          <repay-set v-if="activeName==='repay'" />
+        </keep-alive>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -18,10 +23,11 @@
 <script>
 import basicInfo from './basicInfo'
 import timeSet from './timeSet'
+import repaySet from './repaySet'
 
 export default {
   name: 'Tab',
-  components: { basicInfo, timeSet },
+  components: { basicInfo, timeSet,repaySet},
   data() {
     return {
       activeName: 'basic'
