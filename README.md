@@ -1,8 +1,8 @@
-# Pin 后台
+# Shop-Pin! Admin. Dashboard Front-end
 
+Pin! 开源拼团电商平台，完整的移动端电商平台，附带简单的推荐系统。此项目为其管理端后台前端部分。
 
-
-**这是由我独立完成的Pin 拼团系统的管理端后台系统**
+基于 Vue + element UI 构建。
 
 ## 系统功能
 
@@ -15,9 +15,6 @@
 - 商品、SKU查询、新增、分类、上架等管理
 - 订单、团单按条件查询、发货、退款、备注等管理
 - 按商品查看、回复评论
-
-
-
 
 ## 运行项目
 打开控制台，切换至项目根目录
@@ -44,10 +41,10 @@ npm run build:stage
 npm run build:prod
 ```
 
+## Contributors
 
+Niu Cheng, and other memebers of Pin! dev. team.
 
 ## License
 
 [MIT] license.
-
-Copyright (c) 2019-present Niu Cheng
