@@ -4,6 +4,15 @@ Pin! 开源拼团电商平台，完整的移动端电商平台，附带简单的
 
 基于 Vue + element UI 构建。
 
+## Pin 相关仓库链接
+
+[用户前端仓库(Uni-app)](https://github.com/Cheelem/Shop-pin-Frontend)
+
+[商户前端仓库(Vue)](https://github.com/Cheelem/Shop-pin-Admin-Frontend)
+
+[后端仓库(Java)](https://github.com/Cheelem/Shop-pin-Backend)
+
+
 ## 系统功能
 
 此后台系统包括包含以下模块
